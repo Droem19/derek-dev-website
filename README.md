@@ -1,31 +1,29 @@
 # Derek Dev Website
 
-Personal developer portfolio site used for:
-- introducing who I am
-- showcasing experience and projects
-- sharing in LinkedIn + job applications
+This project is a portfolio site to showcase personal projects, professional experience, and any other work over time.
 
 ## Tech Stack
-- TypeScript 
+- TypeScript
 - React
 - Vite
 
 ## Repo Structure
-- `apps/ui` - Frontend app
-- `apps/api` - Backend/API app (placeholder for now)
-- `infra` - Infrastructure
+- `apps/ui` - Frontend Portfolio App
+- `apps/api` - Backend/API App (placeholder for now)
+- `infra` - Infrastructure Code (placeholder for now)
 
-## Getting Started
-From the repo root:
+## Getting Started (Local Development)
+### Prerequisites
+- Node.js: `24.2.0`
+- pnpm: `10.28.2`
+- AWS CLI configured with your credentials
 
-```bash
-pnpm install
-pnpm --filter ui dev
-```
+1. Install dependencies:
+    ```
+    pnpm install
+    ```
 
-Then open the local Vite URL shown in terminal (usually `http://localhost:5173`).
-
-## Planned Content
-- About me
-- Experience
-- Projects
+2. Run the UI App
+    ```bash
+    pnpm dev
+    ```
