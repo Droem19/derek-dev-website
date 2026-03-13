@@ -1,0 +1,8 @@
+{
+    "app": "pnpm dlx tsx bin/infra.ts",
+    "context": {
+        "rootDomain": "derek-dev.com",
+        "siteSubdomain": "www",
+        "@aws-cdk/aws-cloudfront:defaultSecurityPolicyTLSv1.2_2021": true
+    }
+}

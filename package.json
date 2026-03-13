@@ -10,13 +10,16 @@
     "engineStrict": true,
     "scripts": {
         "dev": "pnpm --filter ui dev",
-        "build": "pnpm --filter ui build",
-        "preview": "pnpm --filter ui preview",
-        "typecheck": "pnpm --filter ui exec tsc --noEmit",
-
+        "build": "pnpm --filter ui build && pnpm --filter infra build",
+        "typecheck": "pnpm --filter ui exec tsc --noEmit && pnpm --filter infra typecheck",
         "format": "biome format --write .",
         "lint": "biome check .",
-        "lint:fix": "biome check --write ."
+
+        "sso": "aws sso login --sso-session align-software",
+        "synth": "pnpm --filter infra exec cdk synth --profile DRoemhildt19",
+        "diff": "pnpm --filter infra exec cdk diff --profile DRoemhildt19",
+        "deploy": "pnpm --filter infra exec cdk deploy --require-approval never --profile DRoemhildt19",
+        "destroy": "pnpm --filter infra exec cdk destroy --force --profile DRoemhildt19"
     },
     "devDependencies": {
         "@biomejs/biome": "2.4.4"
