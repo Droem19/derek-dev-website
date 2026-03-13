@@ -11,7 +11,6 @@ import {
 import type { Construct } from 'constructs';
 
 import path from 'node:path';
-import { fileURLToPath } from 'node:url';
 
 type UIStackProps = cdk.StackProps & {
     rootDomain: string;
@@ -75,29 +74,21 @@ export class UIStack extends cdk.Stack {
         });
 
         const recordName =
-            props.siteDomain === props.rootDomain
-                ? undefined
-                : props.siteDomain.replace(`.${props.rootDomain}`, '');
+            props.siteDomain === props.rootDomain ? undefined : props.siteDomain.replace(`.${props.rootDomain}`, '');
 
         new route53.ARecord(this, 'SiteARecord', {
             zone: hostedZone,
             recordName,
-            target: route53.RecordTarget.fromAlias(
-                new route53Targets.CloudFrontTarget(distribution)
-            ),
+            target: route53.RecordTarget.fromAlias(new route53Targets.CloudFrontTarget(distribution)),
         });
 
         new route53.AaaaRecord(this, 'SiteAaaaRecord', {
             zone: hostedZone,
             recordName,
-            target: route53.RecordTarget.fromAlias(
-                new route53Targets.CloudFrontTarget(distribution)
-            ),
+            target: route53.RecordTarget.fromAlias(new route53Targets.CloudFrontTarget(distribution)),
         });
 
-        const currentFilePath = fileURLToPath(import.meta.url);
-        const currentDirPath = path.dirname(currentFilePath);
-        const uiDistPath = path.resolve(currentDirPath, '../../../apps/ui/dist');
+        const uiDistPath = path.resolve(process.cwd(), '../apps/ui/dist');
 
         new s3deploy.BucketDeployment(this, 'DeployWebsite', {
             destinationBucket: siteBucket,

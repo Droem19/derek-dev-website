@@ -49,11 +49,46 @@ importers:
         specifier: 7.2.4
         version: 7.2.4(@types/node@24.2.0)(tsx@4.21.0)
 
+  infra:
+    dependencies:
+      aws-cdk-lib:
+        specifier: 2.241.0
+        version: 2.241.0(constructs@10.5.1)
+      constructs:
+        specifier: 10.5.1
+        version: 10.5.1
+    devDependencies:
+      '@types/node':
+        specifier: 24.2.0
+        version: 24.2.0
+      aws-cdk:
+        specifier: 2.1109.0
+        version: 2.1109.0
+      tsx:
+        specifier: 4.21.0
+        version: 4.21.0
+      typescript:
+        specifier: 5.9.3
+        version: 5.9.3
+
 packages:
 
   '@antfu/ni@25.0.0':
     resolution: {integrity: sha512-9q/yCljni37pkMr4sPrI3G4jqdIk074+iukc5aFJl7kmDCCsiJrbZ6zKxnES1Gwg+i9RcDZwvktl23puGslmvA==}
     hasBin: true
+
+  '@aws-cdk/asset-awscli-v1@2.2.263':
+    resolution: {integrity: sha512-X9JvcJhYcb7PHs8R7m4zMablO5C9PGb/hYfLnxds9h/rKJu6l7MiXE/SabCibuehxPnuO/vk+sVVJiUWrccarQ==}
+
+  '@aws-cdk/asset-node-proxy-agent-v6@2.1.1':
+    resolution: {integrity: sha512-We4bmHaowOPHr+IQR4/FyTGjRfjgBj4ICMjtqmJeBDWad3Q/6St12NT07leNtyuukv2qMhtSZJQorD8KpKTwRA==}
+
+  '@aws-cdk/cloud-assembly-schema@52.2.0':
+    resolution: {integrity: sha512-ourZjixQ/UfsZc7gdk3vt1eHBODMUjQTYYYCY3ZX8fiXyHtWNDAYZPrXUK96jpCC2fLP+tfHTJrBjZ563pmcEw==}
+    engines: {node: '>= 18.0.0'}
+    bundledDependencies:
+      - jsonschema
+      - semver
 
   '@babel/code-frame@7.29.0':
     resolution: {integrity: sha512-9NhCeYjq9+3uxgdtp20LSiJXJvN0FeCtNGpJxuMFZ1Kv3cWUNb6DOhJwUvcVCzKGR66cw4njwM6hrJLqgOwbcw==}
@@ -965,12 +1000,36 @@ packages:
     resolution: {integrity: sha512-6t10qk83GOG8p0vKmaCr8eiilZwO171AvbROMtvvNiwrTly62t+7XkA8RdIIVbpMhCASAsxgAzdRSwh6nw/5Dg==}
     engines: {node: '>=4'}
 
+  aws-cdk-lib@2.241.0:
+    resolution: {integrity: sha512-v0uDNDqJt6oJ/ZHRp+KIn4xzhF518uKpZxY8fi12bO+dt505t6fCqCaqXuadznokrAyWwIae6q3ByWJfmZzQjA==}
+    engines: {node: '>= 18.0.0'}
+    peerDependencies:
+      constructs: ^10.5.0
+    bundledDependencies:
+      - '@balena/dockerignore'
+      - '@aws-cdk/cloud-assembly-api'
+      - case
+      - fs-extra
+      - ignore
+      - jsonschema
+      - minimatch
+      - punycode
+      - semver
+      - table
+      - yaml
+      - mime-types
+
+  aws-cdk@2.1109.0:
+    resolution: {integrity: sha512-K0jvr5ne9kvDrFfdzbPee/s2rH/iXdGoMHTp/0jaj1qFMOh49RkLWTnURa0sBpJJ0uB2sMzIx7YRmAn55wAy1Q==}
+    engines: {node: '>= 18.0.0'}
+    hasBin: true
+
   balanced-match@4.0.4:
     resolution: {integrity: sha512-BLrgEcRTwX2o6gGxGOCNyMvGSp35YofuYzw9h1IMTRmKqttAZZVU67bdb9Pr2vUHA8+j3i2tJfjO6C6+4myGTA==}
     engines: {node: 18 || 20 || >=22}
 
-  baseline-browser-mapping@2.10.0:
-    resolution: {integrity: sha512-lIyg0szRfYbiy67j9KN8IyeD7q7hcmqnJ1ddWmNt19ItGpNN64mnllmxUNFIOdOm6by97jlL6wfpTTJrmnjWAA==}
+  baseline-browser-mapping@2.10.7:
+    resolution: {integrity: sha512-1ghYO3HnxGec0TCGBXiDLVns4eCSx4zJpxnHrlqFQajmhfKMQBzUGDdkMK7fUW7PTHTeLf+j87aTuKuuwWzMGw==}
     engines: {node: '>=6.0.0'}
     hasBin: true
 
@@ -1011,8 +1070,8 @@ packages:
     resolution: {integrity: sha512-P8BjAsXvZS+VIDUI11hHCQEv74YT67YUi5JJFNWIqL235sBmjX4+qx9Muvls5ivyNENctx46xQLQ3aTuE7ssaQ==}
     engines: {node: '>=6'}
 
-  caniuse-lite@1.0.30001777:
-    resolution: {integrity: sha512-tmN+fJxroPndC74efCdp12j+0rk0RHwV5Jwa1zWaFVyw2ZxAuPeG8ZgWC3Wz7uSjT3qMRQ5XHZ4COgQmsCMJAQ==}
+  caniuse-lite@1.0.30001778:
+    resolution: {integrity: sha512-PN7uxFL+ExFJO61aVmP1aIEG4i9whQd4eoSCebav62UwDyp5OHh06zN4jqKSMePVgxHifCw1QJxdRkA1Pisekg==}
 
   chalk@5.6.2:
     resolution: {integrity: sha512-7NzBL0rN6fMUW+f7A6Io4h40qQlG+xGmtMxfbnH/K7TAtt8JQWVQK+6g0UXKMeVJoyV5EkkNsErQ8pVD3bLHbA==}
@@ -1051,6 +1110,9 @@ packages:
   commander@14.0.3:
     resolution: {integrity: sha512-H+y0Jo/T1RZ9qPP4Eh1pkcQcLRglraJaSLoyOtHxu6AapkjWVCy2Sit1QQ4x3Dng8qDlSsZEet7g5Pq06MvTgw==}
     engines: {node: '>=20'}
+
+  constructs@10.5.1:
+    resolution: {integrity: sha512-f/TfFXiS3G/yVIXDjOQn9oTlyu9Wo7Fxyjj7lb8r92iO81jR2uST+9MstxZTmDGx/CgIbxCXkFXgupnLTNxQZg==}
 
   content-disposition@1.0.1:
     resolution: {integrity: sha512-oIXISMynqSqm241k6kcQ5UwttDILMK4BiurCfGEREw6+X9jkkpEe5T9FZaApyLGGOnFuyMWZpdolTXMtvEJ08Q==}
@@ -1160,8 +1222,8 @@ packages:
   ee-first@1.1.1:
     resolution: {integrity: sha512-WMwm9LhRUo+WUaRN+vRuETqG89IgZphVSNkdFgeb6sS/E4OrDIN7t48CAewSHXc6C8lefD8KKfr5vY61brQlow==}
 
-  electron-to-chromium@1.5.307:
-    resolution: {integrity: sha512-5z3uFKBWjiNR44nFcYdkcXjKMbg5KXNdciu7mhTPo9tB7NbqSNP2sSnGR+fqknZSCwKkBN+oxiiajWs4dT6ORg==}
+  electron-to-chromium@1.5.313:
+    resolution: {integrity: sha512-QBMrTWEf00GXZmJyx2lbYD45jpI3TUFnNIzJ5BBc8piGUDwMPa1GV6HJWTZVvY/eiN3fSopl7NRbgGp9sZ9LTA==}
 
   emoji-regex@10.6.0:
     resolution: {integrity: sha512-toUI84YS5YmxW219erniWD0CIVOo46xGKColeNQRgOzDorgBi1v4D71/OFzgD9GO2UGKIv1C3Sp8DAn0+j5w7A==}
@@ -1990,8 +2052,8 @@ packages:
     resolution: {integrity: sha512-o5sSPKEkg/DIQNmH43V0/uerLrpzVedkUh8tGNvaeXpfpuwjKenlSox/2O/BTlZUtEe+JG7s5YhEz608PlAHRA==}
     engines: {node: '>=0.6'}
 
-  tough-cookie@6.0.0:
-    resolution: {integrity: sha512-kXuRi1mtaKMrsLUxz3sQYvVl37B0Ns6MzfrtV5DvJceE9bPyspOqk9xxv7XbZWcfLWbFmm997vl83qUWVJA64w==}
+  tough-cookie@6.0.1:
+    resolution: {integrity: sha512-LktZQb3IeoUWB9lqR5EWTHgW/VTITCXg4D21M+lvybRVdylLrRMnqaIONLVb5mav8vM19m44HIcGq4qASeu2Qw==}
     engines: {node: '>=16'}
 
   ts-morph@26.0.0:
@@ -2165,6 +2227,12 @@ snapshots:
       fzf: 0.5.2
       package-manager-detector: 1.6.0
       tinyexec: 1.0.2
+
+  '@aws-cdk/asset-awscli-v1@2.2.263': {}
+
+  '@aws-cdk/asset-node-proxy-agent-v6@2.1.1': {}
+
+  '@aws-cdk/cloud-assembly-schema@52.2.0': {}
 
   '@babel/code-frame@7.29.0':
     dependencies:
@@ -2869,9 +2937,18 @@ snapshots:
     dependencies:
       tslib: 2.8.1
 
+  aws-cdk-lib@2.241.0(constructs@10.5.1):
+    dependencies:
+      '@aws-cdk/asset-awscli-v1': 2.2.263
+      '@aws-cdk/asset-node-proxy-agent-v6': 2.1.1
+      '@aws-cdk/cloud-assembly-schema': 52.2.0
+      constructs: 10.5.1
+
+  aws-cdk@2.1109.0: {}
+
   balanced-match@4.0.4: {}
 
-  baseline-browser-mapping@2.10.0: {}
+  baseline-browser-mapping@2.10.7: {}
 
   body-parser@2.2.2:
     dependencies:
@@ -2897,9 +2974,9 @@ snapshots:
 
   browserslist@4.28.1:
     dependencies:
-      baseline-browser-mapping: 2.10.0
-      caniuse-lite: 1.0.30001777
-      electron-to-chromium: 1.5.307
+      baseline-browser-mapping: 2.10.7
+      caniuse-lite: 1.0.30001778
+      electron-to-chromium: 1.5.313
       node-releases: 2.0.36
       update-browserslist-db: 1.2.3(browserslist@4.28.1)
 
@@ -2921,7 +2998,7 @@ snapshots:
 
   callsites@3.1.0: {}
 
-  caniuse-lite@1.0.30001777: {}
+  caniuse-lite@1.0.30001778: {}
 
   chalk@5.6.2: {}
 
@@ -2950,6 +3027,8 @@ snapshots:
   commander@11.1.0: {}
 
   commander@14.0.3: {}
+
+  constructs@10.5.1: {}
 
   content-disposition@1.0.1: {}
 
@@ -3027,7 +3106,7 @@ snapshots:
 
   ee-first@1.1.1: {}
 
-  electron-to-chromium@1.5.307: {}
+  electron-to-chromium@1.5.313: {}
 
   emoji-regex@10.6.0: {}
 
@@ -3106,7 +3185,6 @@ snapshots:
       '@esbuild/win32-arm64': 0.27.4
       '@esbuild/win32-ia32': 0.27.4
       '@esbuild/win32-x64': 0.27.4
-    optional: true
 
   escalade@3.2.0: {}
 
@@ -3290,7 +3368,6 @@ snapshots:
   get-tsconfig@4.13.6:
     dependencies:
       resolve-pkg-maps: 1.0.0
-    optional: true
 
   glob-parent@5.1.2:
     dependencies:
@@ -3486,7 +3563,7 @@ snapshots:
       rettime: 0.10.1
       statuses: 2.0.2
       strict-event-emitter: 0.5.1
-      tough-cookie: 6.0.0
+      tough-cookie: 6.0.1
       type-fest: 5.4.4
       until-async: 3.0.2
       yargs: 17.7.2
@@ -3677,8 +3754,7 @@ snapshots:
 
   resolve-from@4.0.0: {}
 
-  resolve-pkg-maps@1.0.0:
-    optional: true
+  resolve-pkg-maps@1.0.0: {}
 
   restore-cursor@5.1.0:
     dependencies:
@@ -3922,7 +3998,7 @@ snapshots:
 
   toidentifier@1.0.1: {}
 
-  tough-cookie@6.0.0:
+  tough-cookie@6.0.1:
     dependencies:
       tldts: 7.0.25
 
@@ -3945,7 +4021,6 @@ snapshots:
       get-tsconfig: 4.13.6
     optionalDependencies:
       fsevents: 2.3.3
-    optional: true
 
   type-fest@5.4.4:
     dependencies:

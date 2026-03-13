@@ -1,5 +1,5 @@
 {
-    "app": "pnpm dlx tsx bin/infra.ts",
+    "app": "npx tsx bin/infra.ts",
     "context": {
         "rootDomain": "derek-dev.com",
         "siteSubdomain": "www",
