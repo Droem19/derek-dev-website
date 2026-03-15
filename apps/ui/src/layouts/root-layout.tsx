@@ -48,10 +48,12 @@ export function RootLayout() {
                     <NavLink className="font-semibold tracking-tight" to="/">
                         Home
                     </NavLink>
-                    <nav aria-label="Main navigation" className="flex gap-2">
-                        <NavItem to="/experience">Experience</NavItem>
-                        <NavItem to="/projects">Projects</NavItem>
-                    </nav>
+                    <div className="flex items-center gap-3">
+                        <nav aria-label="Main navigation" className="flex gap-2">
+                            <NavItem to="/experience">Experience</NavItem>
+                            <NavItem to="/projects">Projects</NavItem>
+                        </nav>
+                    </div>
                 </div>
             </header>
 
