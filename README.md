@@ -30,6 +30,27 @@ This project is a portfolio site to showcase personal projects, professional exp
     pnpm dev
     ```
 
+## Add UI Components (shadcn)
+This repo uses shadcn in `apps/ui` with config at `apps/ui/components.json`.
+
+1. Add one or more components from the repo root:
+    ```bash
+    pnpm --filter ui exec shadcn add button card input dialog
+    ```
+
+2. Generated files are written to:
+    - `apps/ui/src/components/ui/*`
+    - `apps/ui/src/lib/utils.ts` (if needed)
+
+3. Import components in UI code:
+    ```tsx
+    import { Button } from "@/components/ui/button";
+    ```
+
+4. If a component prompts to overwrite a modified file, review before accepting.
+
+Reference component list: https://ui.shadcn.com/docs/components
+
 ## Build UI
 ```bash
 pnpm build
