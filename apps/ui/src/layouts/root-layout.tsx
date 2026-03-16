@@ -42,14 +42,27 @@ export function RootLayout() {
     }, []);
 
     return (
-        <div className="flex min-h-svh flex-col bg-background text-foreground">
-            <header className="sticky top-0 z-20 border-b bg-background/90 backdrop-blur">
+        <div className="flex min-h-svh flex-col text-foreground">
+            <header className="sticky top-0 z-20 border-b border-white/10 bg-zinc-950/80 shadow-[0_8px_24px_rgb(0_0_0/0.35)] backdrop-blur-xl">
                 <div className="mx-auto flex w-full max-w-5xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
-                    <NavLink className="font-semibold tracking-tight" to="/">
+                    <NavLink
+                        className={({ isActive }) =>
+                            [
+                                'rounded-md border border-white/10 px-3 py-1.5 text-sm font-medium transition-colors',
+                                isActive
+                                    ? 'bg-white text-zinc-900'
+                                    : 'bg-white/5 text-zinc-300 hover:bg-white/10 hover:text-zinc-100',
+                            ].join(' ')
+                        }
+                        to="/"
+                    >
                         Home
                     </NavLink>
                     <div className="flex items-center gap-3">
-                        <nav aria-label="Main navigation" className="flex gap-2">
+                        <nav
+                            aria-label="Main navigation"
+                            className="flex items-center gap-1 rounded-lg border border-white/10 bg-black/20 p-1"
+                        >
                             <NavItem to="/experience">Experience</NavItem>
                             <NavItem to="/projects">Projects</NavItem>
                         </nav>
@@ -75,10 +88,8 @@ function NavItem({ children, to }: { children: string; to: string }) {
         <NavLink
             className={({ isActive }) =>
                 [
-                    'rounded-md px-3 py-2 text-sm transition-colors',
-                    isActive
-                        ? 'bg-secondary text-secondary-foreground'
-                        : 'text-muted-foreground hover:bg-secondary/60 hover:text-foreground',
+                    'rounded-md px-3 py-2 text-sm font-medium transition-colors',
+                    isActive ? 'bg-white text-zinc-900' : 'text-zinc-300 hover:bg-white/10 hover:text-zinc-100',
                 ].join(' ')
             }
             to={to}
