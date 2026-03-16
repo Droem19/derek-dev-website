@@ -21,7 +21,7 @@ export function ProjectsPage() {
 
             <section className="mt-8 grid gap-4 sm:grid-cols-2">
                 {projects.map((project) => (
-                    <article className="rounded-xl border bg-card p-5 text-card-foreground" key={project.name}>
+                    <article className="rounded-xl border-2 bg-card p-5 text-card-foreground" key={project.name}>
                         <h2 className="font-medium">{project.name}</h2>
                         <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{project.description}</p>
                         <ul className="mt-4 flex flex-wrap gap-2">

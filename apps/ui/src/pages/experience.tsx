@@ -49,7 +49,7 @@ export function ExperiencePage() {
             <section className="mt-8 space-y-4">
                 {experiences.map((experience) => (
                     <article
-                        className="rounded-xl border bg-card p-5 text-card-foreground"
+                        className="rounded-xl border-2 bg-card p-5 text-card-foreground"
                         key={`${experience.company}-${experience.timeframe}`}
                     >
                         <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
