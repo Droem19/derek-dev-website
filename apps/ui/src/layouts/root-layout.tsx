@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { NavLink, Outlet } from 'react-router-dom';
 
 import faviconIco from '../../resources/favicon.ico';
@@ -21,8 +21,6 @@ function isOutlineColorId(value: string): value is OutlineColorId {
 }
 
 export function RootLayout() {
-    const [outlineColor, setOutlineColor] = useState<OutlineColorId>('gray');
-
     useEffect(() => {
         document.title = 'Derek Roemhildt';
 
@@ -43,10 +41,10 @@ export function RootLayout() {
                           : storedOutlineColor;
 
         if (normalizedStoredColor && isOutlineColorId(normalizedStoredColor)) {
-            setOutlineColor(normalizedStoredColor);
             document.documentElement.dataset.outlineColor = normalizedStoredColor;
         } else {
-            document.documentElement.dataset.outlineColor = 'gray';
+            document.documentElement.dataset.outlineColor = 'blue';
+            localStorage.setItem(OUTLINE_COLOR_STORAGE_KEY, 'blue');
         }
 
         const setFavicon = (selector: string, href: string, type?: string) => {
@@ -81,11 +79,6 @@ export function RootLayout() {
         setFavicon('link[rel="icon"]:not([sizes])', faviconIco, 'image/x-icon');
     }, []);
 
-    useEffect(() => {
-        document.documentElement.dataset.outlineColor = outlineColor;
-        localStorage.setItem(OUTLINE_COLOR_STORAGE_KEY, outlineColor);
-    }, [outlineColor]);
-
     return (
         <div className="flex min-h-svh flex-col text-foreground">
             <header className="sticky top-0 z-20 border-b border-border bg-zinc-950/80 shadow-[0_8px_24px_rgb(0_0_0/0.35)] backdrop-blur-xl">
@@ -93,31 +86,10 @@ export function RootLayout() {
                     <nav aria-label="Home navigation" className="flex items-center gap-2">
                         <NavItem to="/">Home</NavItem>
                     </nav>
-                    <div className="flex items-center gap-3">
-                        <nav aria-label="Main navigation" className="flex items-center gap-2">
-                            <NavItem to="/experience">Experience</NavItem>
-                            <NavItem to="/projects">Projects</NavItem>
-                        </nav>
-                        <fieldset
-                            aria-label="Outline color selector"
-                            className="flex items-center gap-1 rounded-lg border border-border bg-black/20 p-1"
-                        >
-                            <legend className="sr-only">Outline color selector</legend>
-                            {OUTLINE_COLORS.map((color) => (
-                                <button
-                                    aria-label={`Set outline color to ${color.label}`}
-                                    className={[
-                                        'h-7 w-7 rounded-full border-2 transition-transform hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/60',
-                                        `outline-color-${color.id}`,
-                                        outlineColor === color.id ? 'ring-2 ring-foreground/70' : 'ring-0',
-                                    ].join(' ')}
-                                    key={color.id}
-                                    onClick={() => setOutlineColor(color.id)}
-                                    type="button"
-                                />
-                            ))}
-                        </fieldset>
-                    </div>
+                    <nav aria-label="Main navigation" className="flex items-center gap-2">
+                        <NavItem to="/experience">Experience</NavItem>
+                        <NavItem to="/projects">Projects</NavItem>
+                    </nav>
                 </div>
             </header>
 
