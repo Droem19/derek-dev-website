@@ -9,32 +9,31 @@ const alertVariants = cva(
         variants: {
             variant: {
                 default: 'bg-card text-card-foreground',
-                destructive:
-                    'border-destructive/50 text-destructive dark:border-destructive [&>svg]:text-destructive',
+                destructive: 'border-destructive/50 text-destructive dark:border-destructive [&>svg]:text-destructive',
             },
         },
         defaultVariants: {
             variant: 'default',
         },
-    },
+    }
 );
 
-function Alert({
-    className,
-    variant,
-    ...props
-}: React.ComponentProps<'div'> & VariantProps<typeof alertVariants>) {
+function Alert({ className, variant, ...props }: React.ComponentProps<'div'> & VariantProps<typeof alertVariants>) {
     return <div className={cn(alertVariants({ className, variant }))} data-slot="alert" role="alert" {...props} />;
 }
 
 function AlertTitle({ className, ...props }: React.ComponentProps<'h5'>) {
-    return <h5 className={cn('mb-1 font-medium leading-none tracking-tight', className)} data-slot="alert-title" {...props} />;
+    return (
+        <h5
+            className={cn('mb-1 font-medium leading-none tracking-tight', className)}
+            data-slot="alert-title"
+            {...props}
+        />
+    );
 }
 
 function AlertDescription({ className, ...props }: React.ComponentProps<'div'>) {
-    return (
-        <div className={cn('text-sm [&_p]:leading-relaxed', className)} data-slot="alert-description" {...props} />
-    );
+    return <div className={cn('text-sm [&_p]:leading-relaxed', className)} data-slot="alert-description" {...props} />;
 }
 
 export { Alert, AlertDescription, AlertTitle };

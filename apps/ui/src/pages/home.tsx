@@ -1,22 +1,47 @@
-import { CalendarDays, Check, Code2, Download, Mail, MapPin } from 'lucide-react';
-import { useEffect, useRef, useState } from 'react';
+import {
+    Atom,
+    Braces,
+    CalendarDays,
+    Check,
+    Cloud,
+    Code2,
+    Database,
+    Download,
+    GitBranch,
+    Mail,
+    MapPin,
+    Package,
+    Server,
+    Workflow,
+} from 'lucide-react';
 import type { ComponentType, MouseEvent, SVGProps } from 'react';
+import { useEffect, useRef, useState } from 'react';
+
 import { Alert, AlertDescription } from '@/components/alert';
 import { Card, CardContent } from '@/components/card';
 import resumePdf from '../../resources/derek-roemhildt-resume.pdf';
 import profilePicture from '../../resources/profile-picture.png';
 
+const EMAIL_ADDRESS = 'droemhildt28@gmail.com';
 const OUTLINE_COLOR_STORAGE_KEY = 'outline-color';
-
 const OUTLINE_COLORS = [
     { id: 'gray', label: 'Gray' },
     { id: 'blue', label: 'Blue' },
     { id: 'green', label: 'Green' },
     { id: 'red', label: 'Red' },
 ] as const;
+const SKILLS: { icon: ComponentType<SVGProps<SVGSVGElement>>; label: string }[] = [
+    { icon: Braces, label: 'TypeScript' },
+    { icon: Atom, label: 'React' },
+    { icon: Server, label: 'Node.js' },
+    { icon: Cloud, label: 'AWS' },
+    { icon: Database, label: 'PostgreSQL' },
+    { icon: Package, label: 'Docker' },
+    { icon: GitBranch, label: 'Git + GitHub Actions' },
+    { icon: Workflow, label: 'Microservices + REST APIs' },
+];
 
 type OutlineColorId = (typeof OUTLINE_COLORS)[number]['id'];
-const EMAIL_ADDRESS = 'droemhildt28@gmail.com';
 
 function isOutlineColorId(value: string): value is OutlineColorId {
     return OUTLINE_COLORS.some((color) => color.id === value);
@@ -203,6 +228,17 @@ export function HomePage() {
                 </div>
             </section>
 
+            <Card className="mt-4 rounded-2xl">
+                <CardContent className="space-y-4 p-6 sm:p-7">
+                    <h2 className="text-xl font-semibold text-ring sm:text-2xl">Key Skills</h2>
+                    <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-4">
+                        {SKILLS.map((skill) => (
+                            <SkillTile icon={skill.icon} key={skill.label} label={skill.label} />
+                        ))}
+                    </div>
+                </CardContent>
+            </Card>
+
             {showEmailCopiedAlert ? (
                 <div className="pointer-events-none fixed right-4 bottom-4 z-50 sm:right-6 sm:bottom-6">
                     <Alert className="w-auto max-w-xs border-ring/40 bg-black/85 px-3 py-2 shadow-xl backdrop-blur-sm">
@@ -240,6 +276,17 @@ function SocialLinkButton({ download, href, icon: Icon, label, onClick }: Social
             <Icon className="h-5 w-5 text-ring transition-transform duration-200 ease-out group-hover:scale-115 group-hover:-translate-y-0.5" />
             <span>{label}</span>
         </a>
+    );
+}
+
+function SkillTile({ icon: Icon, label }: { icon: ComponentType<SVGProps<SVGSVGElement>>; label: string }) {
+    return (
+        <div className="group flex min-h-14 items-center gap-3 rounded-lg border border-border/80 bg-black/10 px-3 py-2 transition-colors duration-200 hover:border-ring/60 hover:bg-black/20">
+            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md border border-border/70 bg-black/20">
+                <Icon className="h-4 w-4 text-ring transition-transform duration-200 ease-out group-hover:scale-110" />
+            </div>
+            <span className="text-sm font-medium text-foreground">{label}</span>
+        </div>
     );
 }
 
