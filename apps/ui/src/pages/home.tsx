@@ -139,7 +139,7 @@ export function HomePage() {
                                         <button
                                             aria-label={`Set outline color to ${color.label}`}
                                             className={[
-                                                'h-7 w-7 rounded-full border-2 transition-transform hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/60',
+                                                'h-7 w-7 rounded-full border-2 transition-[transform,box-shadow,border-color] duration-200 ease-out hover:-translate-y-0.5 hover:scale-110 hover:shadow-[0_10px_20px_-12px_var(--color-ring)] active:translate-y-0 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/60',
                                                 `outline-color-${color.id}`,
                                                 outlineColor === color.id ? 'ring-2 ring-foreground/70' : 'ring-0',
                                             ].join(' ')}
@@ -171,14 +171,14 @@ function SocialLinkButton({ download, href, icon: Icon, label, onClick }: Social
 
     return (
         <a
-            className="group flex min-h-20 w-full flex-col items-center justify-center gap-1.5 rounded-xl border border-border bg-black/15 px-2.5 py-2.5 text-xs font-medium text-foreground transition-colors hover:border-ring hover:bg-black/25 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/70 sm:min-h-24 sm:text-sm"
+            className="group flex min-h-20 w-full flex-col items-center justify-center gap-1.5 rounded-xl border border-border bg-black/15 px-2.5 py-2.5 text-xs font-medium text-foreground transition-[transform,box-shadow,border-color,background-color] duration-200 ease-out hover:-translate-y-1 hover:scale-[1.03] hover:border-ring hover:bg-black/25 hover:shadow-[0_12px_24px_-14px_var(--color-ring)] active:translate-y-0 active:scale-[0.99] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/70 sm:min-h-24 sm:text-sm"
             download={download}
             href={href}
             onClick={onClick}
             rel={isMailTo ? undefined : 'noreferrer'}
             target={isMailTo || download ? undefined : '_blank'}
         >
-            <Icon className="h-5 w-5 text-ring transition-transform group-hover:scale-105" />
+            <Icon className="h-5 w-5 text-ring transition-transform duration-200 ease-out group-hover:scale-115 group-hover:-translate-y-0.5" />
             <span>{label}</span>
         </a>
     );
