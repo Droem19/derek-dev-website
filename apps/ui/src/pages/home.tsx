@@ -1,6 +1,7 @@
-import { CalendarDays, Code2, Download, Mail, MapPin } from 'lucide-react';
-import { useState } from 'react';
-import type { ComponentType, SVGProps } from 'react';
+import { CalendarDays, Check, Code2, Download, Mail, MapPin } from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
+import type { ComponentType, MouseEvent, SVGProps } from 'react';
+import { Alert, AlertDescription } from '@/components/alert';
 import { Card, CardContent } from '@/components/card';
 import resumePdf from '../../resources/derek-roemhildt-resume.pdf';
 import profilePicture from '../../resources/profile-picture.png';
@@ -15,6 +16,7 @@ const OUTLINE_COLORS = [
 ] as const;
 
 type OutlineColorId = (typeof OUTLINE_COLORS)[number]['id'];
+const EMAIL_ADDRESS = 'droemhildt28@gmail.com';
 
 function isOutlineColorId(value: string): value is OutlineColorId {
     return OUTLINE_COLORS.some((color) => color.id === value);
@@ -39,12 +41,63 @@ function getYearsOfExperience(startDate = new Date(2019, 4, 1)): number {
 
 export function HomePage() {
     const [outlineColor, setOutlineColor] = useState<OutlineColorId>(getInitialOutlineColor);
+    const [showEmailCopiedAlert, setShowEmailCopiedAlert] = useState(false);
+    const emailAlertTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-    const handleEmailClick = () => {
+    useEffect(
+        () => () => {
+            if (emailAlertTimeoutRef.current) {
+                clearTimeout(emailAlertTimeoutRef.current);
+            }
+        },
+        []
+    );
+
+    const triggerEmailCopiedAlert = () => {
+        setShowEmailCopiedAlert(true);
+        if (emailAlertTimeoutRef.current) {
+            clearTimeout(emailAlertTimeoutRef.current);
+        }
+
+        emailAlertTimeoutRef.current = setTimeout(() => {
+            setShowEmailCopiedAlert(false);
+        }, 2200);
+    };
+
+    const copyEmailWithExecCommand = () => {
+        if (typeof document === 'undefined') {
+            return false;
+        }
+
+        const textArea = document.createElement('textarea');
+        textArea.value = EMAIL_ADDRESS;
+        textArea.setAttribute('readonly', '');
+        textArea.style.position = 'fixed';
+        textArea.style.opacity = '0';
+        document.body.appendChild(textArea);
+        textArea.select();
+        textArea.setSelectionRange(0, textArea.value.length);
+        const copied = document.execCommand('copy');
+        document.body.removeChild(textArea);
+        return copied;
+    };
+
+    const handleEmailClick = (event: MouseEvent<HTMLAnchorElement>) => {
+        event.preventDefault();
+        const copied = copyEmailWithExecCommand();
+
+        if (copied) {
+            triggerEmailCopiedAlert();
+            return;
+        }
+
         if (typeof navigator !== 'undefined' && navigator.clipboard?.writeText) {
-            navigator.clipboard.writeText('droemhildt28@gmail.com').catch(() => {
-                // Clipboard can fail due to browser permissions; mailto still works.
-            });
+            void navigator.clipboard
+                .writeText(EMAIL_ADDRESS)
+                .then(triggerEmailCopiedAlert)
+                .catch(() => {
+                    // Browsers may block clipboard in some contexts.
+                });
         }
     };
 
@@ -106,12 +159,7 @@ export function HomePage() {
                                 label="LinkedIn"
                             />
                             <SocialLinkButton href="https://github.com/Droem19" icon={GitHubIcon} label="GitHub" />
-                            <SocialLinkButton
-                                href="mailto:droemhildt28@gmail.com"
-                                icon={Mail}
-                                label="Email"
-                                onClick={handleEmailClick}
-                            />
+                            <SocialLinkButton href="#" icon={Mail} label="Email" onClick={handleEmailClick} />
                         </div>
                     </CardContent>
                 </Card>
@@ -154,6 +202,17 @@ export function HomePage() {
                     </Card>
                 </div>
             </section>
+
+            {showEmailCopiedAlert ? (
+                <div className="pointer-events-none fixed right-4 bottom-4 z-50 sm:right-6 sm:bottom-6">
+                    <Alert className="w-auto max-w-xs border-ring/40 bg-black/85 px-3 py-2 shadow-xl backdrop-blur-sm">
+                        <AlertDescription className="flex items-center gap-2 text-xs sm:text-sm">
+                            <Check className="h-4 w-4 shrink-0 text-ring" />
+                            <span>Email copied to clipboard!</span>
+                        </AlertDescription>
+                    </Alert>
+                </div>
+            ) : null}
         </section>
     );
 }
@@ -163,11 +222,11 @@ type SocialLinkButtonProps = {
     href: string;
     icon: ComponentType<SVGProps<SVGSVGElement>>;
     download?: boolean;
-    onClick?: () => void;
+    onClick?: (event: MouseEvent<HTMLAnchorElement>) => void;
 };
 
 function SocialLinkButton({ download, href, icon: Icon, label, onClick }: SocialLinkButtonProps) {
-    const isMailTo = href.startsWith('mailto:');
+    const isExternal = href.startsWith('http://') || href.startsWith('https://');
 
     return (
         <a
@@ -175,8 +234,8 @@ function SocialLinkButton({ download, href, icon: Icon, label, onClick }: Social
             download={download}
             href={href}
             onClick={onClick}
-            rel={isMailTo ? undefined : 'noreferrer'}
-            target={isMailTo || download ? undefined : '_blank'}
+            rel={isExternal ? 'noreferrer' : undefined}
+            target={isExternal ? '_blank' : undefined}
         >
             <Icon className="h-5 w-5 text-ring transition-transform duration-200 ease-out group-hover:scale-115 group-hover:-translate-y-0.5" />
             <span>{label}</span>
