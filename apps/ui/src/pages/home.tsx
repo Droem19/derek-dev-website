@@ -19,6 +19,7 @@ import { useEffect, useRef, useState } from 'react';
 
 import { Alert, AlertDescription } from '@/components/alert';
 import { Card, CardContent } from '@/components/card';
+import { GitHubIcon, LinkedInIcon } from '@/components/custom-icons';
 import resumePdf from '../../resources/derek-roemhildt-resume.pdf';
 import profilePicture from '../../resources/profile-picture.png';
 
@@ -136,7 +137,7 @@ export function HomePage() {
         <section className="mx-auto w-full max-w-5xl px-4 py-10 sm:px-6 lg:px-8">
             <section className="grid items-start gap-4 lg:grid-cols-[minmax(0,2.2fr)_minmax(13.5rem,0.8fr)] lg:items-stretch">
                 <Card className="rounded-2xl">
-                    <CardContent className="space-y-6 p-6 sm:p-8">
+                    <CardContent className="space-y-6 px-6 pt-6 pb-6 sm:px-8 sm:pt-8 sm:pb-8">
                         <div className="flex flex-col gap-6 md:flex-row md:items-start md:justify-between">
                             <div className="space-y-6">
                                 <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">
@@ -153,7 +154,7 @@ export function HomePage() {
                                     </p>
                                     <p className="flex items-center gap-3">
                                         <Code2 className="h-5 w-5 shrink-0 text-ring" />
-                                        <span>Full Stack Developer</span>
+                                        <span>Full-Stack Software Engineer</span>
                                     </p>
                                     <p className="flex items-center gap-3">
                                         <CalendarDays className="h-5 w-5 shrink-0 text-ring" />
@@ -170,10 +171,10 @@ export function HomePage() {
                         </div>
 
                         <p className="text-base leading-relaxed text-muted-foreground sm:text-lg">
-                            I&apos;m a full-stack software engineer building reliable, practical systems that simplify
-                            complex workflows. I specialize in SaaS platforms, automation, and data pipelines. I lean
-                            towards backend development and infrastructure, but I ship complete solutions across both
-                            frontend and backend.
+                            I&apos;m a full-stack software engineer focused on building reliable, practical systems that
+                            simplify complex workflows at scale. I specialize in SaaS platforms, automation, and data
+                            pipelines. I lean toward backend development and infrastructure, but I ship complete
+                            solutions across both frontend and backend for real-world business needs.
                         </p>
 
                         <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-4">
@@ -195,8 +196,8 @@ export function HomePage() {
                             <h2 className="text-xl font-semibold text-ring sm:text-2xl">About Me</h2>
                             <p className="text-base leading-relaxed text-muted-foreground sm:text-lg">
                                 When I&apos;m not building software, I spend most of my time staying active and
-                                exploring new places. I enjoy running, lifting, hiking, and traveling with my wife and
-                                dog.
+                                exploring new places. Some of my favorite hobbies include working out, hiking, traveling
+                                with my wife and dog, and cooking up delicious barbecue for friends and family.
                             </p>
                         </CardContent>
                     </Card>
@@ -204,8 +205,8 @@ export function HomePage() {
                     <Card className="rounded-2xl">
                         <CardContent className="p-4">
                             <fieldset aria-label="Outline color selector" className="space-y-3">
-                                <legend className="text-center text-xs font-medium tracking-wide text-muted-foreground">
-                                    I like to build interactive things
+                                <legend className="text-center text-sm font-medium tracking-wide text-muted-foreground sm:text-base">
+                                    Try Your Own Style
                                 </legend>
                                 <div className="grid grid-cols-4 place-items-center gap-2">
                                     {OUTLINE_COLORS.map((color) => (
@@ -287,21 +288,5 @@ function SkillTile({ icon: Icon, label }: { icon: ComponentType<SVGProps<SVGSVGE
             </div>
             <span className="text-sm font-medium text-foreground">{label}</span>
         </div>
-    );
-}
-
-function LinkedInIcon(props: SVGProps<SVGSVGElement>) {
-    return (
-        <svg aria-hidden="true" fill="currentColor" viewBox="0 0 24 24" {...props}>
-            <path d="M20.45 20.45h-3.56v-5.57c0-1.33-.03-3.05-1.86-3.05-1.86 0-2.14 1.45-2.14 2.95v5.67H9.33V9h3.41v1.56h.05c.48-.9 1.64-1.86 3.37-1.86 3.61 0 4.28 2.37 4.28 5.46v6.29ZM5.31 7.43a2.06 2.06 0 1 1 0-4.11 2.06 2.06 0 0 1 0 4.11ZM7.09 20.45H3.53V9h3.56v11.45Z" />
-        </svg>
-    );
-}
-
-function GitHubIcon(props: SVGProps<SVGSVGElement>) {
-    return (
-        <svg aria-hidden="true" fill="currentColor" viewBox="0 0 24 24" {...props}>
-            <path d="M12 .5A11.5 11.5 0 0 0 .5 12.16c0 5.12 3.32 9.45 7.92 10.98.58.11.8-.26.8-.57v-2.02c-3.22.72-3.9-1.4-3.9-1.4-.53-1.37-1.3-1.74-1.3-1.74-1.07-.75.08-.74.08-.74 1.18.08 1.8 1.24 1.8 1.24 1.05 1.82 2.75 1.3 3.42.99.1-.77.4-1.3.74-1.6-2.57-.3-5.27-1.31-5.27-5.85 0-1.3.45-2.36 1.19-3.19-.12-.3-.52-1.5.11-3.13 0 0 .97-.32 3.18 1.22a10.9 10.9 0 0 1 5.8 0c2.2-1.54 3.17-1.22 3.17-1.22.64 1.64.24 2.84.12 3.13.74.83 1.18 1.89 1.18 3.19 0 4.55-2.7 5.55-5.28 5.84.42.37.8 1.08.8 2.18v3.23c0 .32.2.69.8.57a11.67 11.67 0 0 0 7.92-10.98A11.5 11.5 0 0 0 12 .5Z" />
-        </svg>
     );
 }
