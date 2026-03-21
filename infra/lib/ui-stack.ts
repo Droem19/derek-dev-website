@@ -41,8 +41,12 @@ export class UIStack extends cdk.Stack {
             autoDeleteObjects: false,
         });
 
+        const domainNames =
+            props.siteDomain === props.rootDomain ? [props.rootDomain] : [props.rootDomain, props.siteDomain];
+
         const certificate = new acm.Certificate(this, 'SiteCertificate', {
-            domainName: props.siteDomain,
+            domainName: props.rootDomain,
+            subjectAlternativeNames: domainNames.filter((domain) => domain !== props.rootDomain),
             validation: acm.CertificateValidation.fromDns(hostedZone),
         });
 
@@ -52,7 +56,7 @@ export class UIStack extends cdk.Stack {
                 viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
                 cachePolicy: cloudfront.CachePolicy.CACHING_OPTIMIZED,
             },
-            domainNames: [props.siteDomain],
+            domainNames,
             certificate,
             defaultRootObject: 'index.html',
             errorResponses: [
@@ -73,20 +77,33 @@ export class UIStack extends cdk.Stack {
             enableLogging: true,
         });
 
-        const recordName =
-            props.siteDomain === props.rootDomain ? undefined : props.siteDomain.replace(`.${props.rootDomain}`, '');
-
-        new route53.ARecord(this, 'SiteARecord', {
+        new route53.ARecord(this, 'RootARecord', {
             zone: hostedZone,
-            recordName,
+            recordName: undefined,
             target: route53.RecordTarget.fromAlias(new route53Targets.CloudFrontTarget(distribution)),
         });
 
-        new route53.AaaaRecord(this, 'SiteAaaaRecord', {
+        new route53.AaaaRecord(this, 'RootAaaaRecord', {
             zone: hostedZone,
-            recordName,
+            recordName: undefined,
             target: route53.RecordTarget.fromAlias(new route53Targets.CloudFrontTarget(distribution)),
         });
+
+        if (props.siteDomain !== props.rootDomain) {
+            const subdomainRecordName = props.siteDomain.replace(`.${props.rootDomain}`, '');
+
+            new route53.ARecord(this, 'SiteARecord', {
+                zone: hostedZone,
+                recordName: subdomainRecordName,
+                target: route53.RecordTarget.fromAlias(new route53Targets.CloudFrontTarget(distribution)),
+            });
+
+            new route53.AaaaRecord(this, 'SiteAaaaRecord', {
+                zone: hostedZone,
+                recordName: subdomainRecordName,
+                target: route53.RecordTarget.fromAlias(new route53Targets.CloudFrontTarget(distribution)),
+            });
+        }
 
         const uiDistPath = path.resolve(process.cwd(), '../apps/ui/dist');
 
