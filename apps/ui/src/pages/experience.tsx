@@ -5,7 +5,7 @@ const experiences = [
         location: 'Remote',
         timeframe: 'Apr 2024 - Present',
         highlights: [
-            'Architected automated ERA ingestion pipelines that parse X12 835 remittance files into structured EOB records, eliminating manual data entry for 2,500+ chiropractic clinics and improving billing accuracy',
+            'Architected automated ERA ingestion pipelines that parse X12 835 remittance files into structured EOB records, eliminating manual data entry for 1000+ chiropractic clinics and improving billing accuracy',
             'Built a queue-based Twilio SMS processing system using SQS and Lambda to manage burst traffic and track patient opt-in/out status, ensuring compliant and reliable clinic messaging',
             'Designed and implemented a configurable rules engine to allocate insurance remittances across procedures, supporting default and clinic-specific business logic at scale',
             'Contributed to the design and implementation of a double-entry accounting system used to track all financial transactions across the platform, including payments, transfers, refunds, and taxes',
