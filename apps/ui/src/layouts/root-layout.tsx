@@ -11,10 +11,10 @@ const OUTLINE_COLOR_STORAGE_KEY = 'outline-color';
 const EMAIL_ADDRESS = 'droemhildt28@gmail.com';
 
 const OUTLINE_COLORS = [
-    { id: 'gray', label: 'Gray' },
     { id: 'blue', label: 'Blue' },
     { id: 'green', label: 'Green' },
     { id: 'red', label: 'Red' },
+    { id: 'gray', label: 'Gray' },
 ] as const;
 
 type OutlineColorId = (typeof OUTLINE_COLORS)[number]['id'];
@@ -28,23 +28,8 @@ export function RootLayout() {
         document.title = 'Derek Roemhildt';
 
         const storedOutlineColor = localStorage.getItem(OUTLINE_COLOR_STORAGE_KEY);
-        const normalizedStoredColor =
-            storedOutlineColor === 'zinc'
-                ? 'gray'
-                : storedOutlineColor === 'emerald'
-                  ? 'green'
-                  : storedOutlineColor === 'rose'
-                    ? 'red'
-                    : storedOutlineColor === 'amber'
-                      ? 'red'
-                      : storedOutlineColor === 'cyan'
-                        ? 'blue'
-                        : storedOutlineColor === 'violet'
-                          ? 'blue'
-                          : storedOutlineColor;
-
-        if (normalizedStoredColor && isOutlineColorId(normalizedStoredColor)) {
-            document.documentElement.dataset.outlineColor = normalizedStoredColor;
+        if (storedOutlineColor && isOutlineColorId(storedOutlineColor)) {
+            document.documentElement.dataset.outlineColor = storedOutlineColor;
         } else {
             document.documentElement.dataset.outlineColor = 'blue';
             localStorage.setItem(OUTLINE_COLOR_STORAGE_KEY, 'blue');

@@ -26,10 +26,10 @@ import profilePicture from '../../resources/profile-picture.png';
 const EMAIL_ADDRESS = 'droemhildt28@gmail.com';
 const OUTLINE_COLOR_STORAGE_KEY = 'outline-color';
 const OUTLINE_COLORS = [
-    { id: 'gray', label: 'Gray' },
     { id: 'blue', label: 'Blue' },
     { id: 'green', label: 'Green' },
     { id: 'red', label: 'Red' },
+    { id: 'gray', label: 'Gray' },
 ] as const;
 const SKILLS: { icon: ComponentType<SVGProps<SVGSVGElement>>; label: string }[] = [
     { icon: Braces, label: 'TypeScript' },

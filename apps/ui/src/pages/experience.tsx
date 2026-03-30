@@ -1,12 +1,36 @@
+import {
+    Braces,
+    Cloud,
+    Database,
+    DollarSign,
+    type LucideIcon,
+    MessageSquare,
+    Server,
+    TestTube2,
+    Workflow,
+} from 'lucide-react';
+
+type ExperienceSkill = {
+    label: string;
+    icon: LucideIcon;
+};
+
 const experiences = [
     {
         title: 'Software Engineer',
         company: 'ChiroHD',
         location: 'Remote',
         timeframe: 'Apr 2024 - Present',
+        skills: [
+            { label: 'TypeScript', icon: Braces },
+            { label: 'Node.js', icon: Braces },
+            { label: 'AWS', icon: Cloud },
+            { label: 'X12/ERA', icon: Database },
+            { label: 'Twilio MMS', icon: MessageSquare },
+        ] satisfies ExperienceSkill[],
         highlights: [
             'Architected automated ERA ingestion pipelines that parse X12 835 remittance files into structured EOB records, eliminating manual data entry for 1000+ chiropractic clinics and improving billing accuracy',
-            'Built a queue-based Twilio SMS processing system using SQS and Lambda to manage burst traffic and track patient opt-in/out status, ensuring compliant and reliable clinic messaging',
+            'Built a queue-based Twilio MMS processing system using SQS and Lambda to manage burst traffic and track patient opt-in/out status, ensuring compliant and reliable clinic messaging',
             'Designed and implemented a configurable rules engine to allocate insurance remittances across procedures, supporting default and clinic-specific business logic at scale',
             'Contributed to the design and implementation of a double-entry accounting system used to track all financial transactions across the platform, including payments, transfers, refunds, and taxes',
             'Enhanced platform security by implementing app-based MFA using AWS Cognito, improving account protection for patient and billing data',
@@ -18,6 +42,13 @@ const experiences = [
         company: 'Thomson Reuters',
         location: 'Hybrid',
         timeframe: 'Jan 2021 - Apr 2024',
+        skills: [
+            { label: 'Java', icon: Braces },
+            { label: 'Python', icon: Braces },
+            { label: 'AWS', icon: Cloud },
+            { label: 'Spring Boot', icon: TestTube2 },
+            { label: 'Cost Optimization', icon: DollarSign },
+        ] satisfies ExperienceSkill[],
         highlights: [
             'Modernized legacy data workflows by migrating acquisition and distribution systems from on-prem infrastructure to AWS, enabling scalable processing of 250M+ documents annually',
             'Architected and implemented a secure upload portal using Spring Boot and AWS S3 that enabled external partners to submit datasets, triggering automated data processing pipelines for downstream systems',
@@ -31,6 +62,12 @@ const experiences = [
         company: 'Maverick Software Consulting',
         location: 'Minneapolis, MN',
         timeframe: 'May 2019 - Dec 2020',
+        skills: [
+            { label: 'Java', icon: Braces },
+            { label: 'Gradle + Jenkins', icon: Server },
+            { label: 'Automation', icon: Workflow },
+            { label: 'TestNG', icon: TestTube2 },
+        ] satisfies ExperienceSkill[],
         highlights: [
             'Designed and implemented the first automated test suites for the CLEAR public-records platform using Java and TestNG, introducing automated code coverage and real-data regression testing across previously untested systems',
             'Developed CI-driven testing pipelines using Gradle and Jenkins to execute automated test suites against multiple applications, improving reliability and enabling early defect detection',
@@ -60,6 +97,21 @@ export function ExperiencePage() {
                         <p className="mt-1 text-sm text-muted-foreground">
                             {experience.company} - {experience.location}
                         </p>
+                        <div className="mt-3 flex flex-wrap gap-2">
+                            {experience.skills.map((skill) => {
+                                const Icon = skill.icon;
+
+                                return (
+                                    <span
+                                        className="inline-flex items-center gap-1.5 rounded-full border border-border/80 bg-black/10 px-2.5 py-1 text-xs text-muted-foreground"
+                                        key={skill.label}
+                                    >
+                                        <Icon className="h-3.5 w-3.5 text-ring" />
+                                        {skill.label}
+                                    </span>
+                                );
+                            })}
+                        </div>
                         <ul className="mt-3 space-y-2 pl-5 text-sm leading-relaxed">
                             {experience.highlights.map((highlight) => (
                                 <li className="list-disc" key={highlight}>
