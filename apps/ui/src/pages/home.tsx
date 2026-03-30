@@ -38,7 +38,7 @@ const SKILLS: { icon: ComponentType<SVGProps<SVGSVGElement>>; label: string }[] 
     { icon: Cloud, label: 'AWS' },
     { icon: Database, label: 'PostgreSQL' },
     { icon: Package, label: 'Docker' },
-    { icon: GitBranch, label: 'Git + GitHub Actions' },
+    { icon: GitBranch, label: 'CI/CD' },
     { icon: Workflow, label: 'Microservices + REST APIs' },
 ];
 
@@ -136,7 +136,7 @@ export function HomePage() {
     return (
         <section className="mx-auto w-full max-w-5xl px-4 py-10 sm:px-6 lg:px-8">
             <section className="grid items-start gap-4 lg:grid-cols-[minmax(0,2.2fr)_minmax(13.5rem,0.8fr)] lg:items-stretch">
-                <Card className="rounded-2xl">
+                <Card className="rounded-2xl border-2">
                     <CardContent className="space-y-6 px-6 pt-6 pb-6 sm:px-8 sm:pt-8 sm:pb-8">
                         <div className="flex flex-col gap-6 md:flex-row md:items-start md:justify-between">
                             <div className="space-y-6">
@@ -191,7 +191,7 @@ export function HomePage() {
                 </Card>
 
                 <div className="flex h-full flex-col gap-4">
-                    <Card className="rounded-2xl lg:flex-1">
+                    <Card className="rounded-2xl border-2 lg:flex-1">
                         <CardContent className="space-y-3 p-6 lg:h-full">
                             <h2 className="text-xl font-semibold text-ring sm:text-2xl">About Me</h2>
                             <p className="text-base leading-relaxed text-muted-foreground sm:text-lg">
@@ -202,7 +202,7 @@ export function HomePage() {
                         </CardContent>
                     </Card>
 
-                    <Card className="rounded-2xl">
+                    <Card className="rounded-2xl border-2">
                         <CardContent className="p-4">
                             <fieldset aria-label="Outline color selector" className="space-y-3">
                                 <legend className="text-center text-sm font-medium tracking-wide text-muted-foreground sm:text-base">
@@ -229,7 +229,7 @@ export function HomePage() {
                 </div>
             </section>
 
-            <Card className="mt-4 rounded-2xl">
+            <Card className="mt-4 rounded-2xl border-2">
                 <CardContent className="space-y-4 p-6 sm:p-7">
                     <h2 className="text-xl font-semibold text-ring sm:text-2xl">Key Skills</h2>
                     <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-4">

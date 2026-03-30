@@ -84,7 +84,7 @@ export function RootLayout() {
 
     return (
         <div className="flex min-h-svh flex-col text-foreground">
-            <header className="sticky top-0 z-20 border-b border-border bg-zinc-950/80 shadow-[0_8px_24px_rgb(0_0_0/0.35)] backdrop-blur-xl">
+            <header className="sticky top-0 z-20 border-b border-border/80 bg-black/10">
                 <div className="mx-auto flex w-full max-w-5xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
                     <nav aria-label="Home navigation" className="flex items-center gap-2">
                         <NavItem to="/">Home</NavItem>
