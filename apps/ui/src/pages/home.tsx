@@ -20,6 +20,7 @@ import { useEffect, useRef, useState } from 'react';
 import { Alert, AlertDescription } from '@/components/alert';
 import { Card, CardContent } from '@/components/card';
 import { GitHubIcon, LinkedInIcon } from '@/components/custom-icons';
+import { ExperienceTimeline } from '@/components/experience-timeline';
 import resumePdf from '../../resources/derek-roemhildt-resume.pdf';
 import profilePicture from '../../resources/profile-picture.png';
 
@@ -239,6 +240,8 @@ export function HomePage() {
                     </div>
                 </CardContent>
             </Card>
+
+            <ExperienceTimeline />
 
             {showEmailCopiedAlert ? (
                 <div className="pointer-events-none fixed right-4 bottom-4 z-50 sm:right-6 sm:bottom-6">

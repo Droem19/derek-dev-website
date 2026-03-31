@@ -75,7 +75,6 @@ export function RootLayout() {
                         <NavItem to="/">Home</NavItem>
                     </nav>
                     <nav aria-label="Main navigation" className="flex items-center gap-2">
-                        <NavItem to="/experience">Experience</NavItem>
                         <NavItem to="/projects">Projects</NavItem>
                     </nav>
                 </div>

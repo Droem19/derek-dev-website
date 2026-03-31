@@ -8,7 +8,6 @@ import { RootLayout } from '@/layouts/root-layout';
 import './index.css';
 
 const HomePage = lazy(() => import('@/pages/home').then((m) => ({ default: m.HomePage })));
-const ExperiencePage = lazy(() => import('@/pages/experience').then((m) => ({ default: m.ExperiencePage })));
 const ProjectsPage = lazy(() => import('@/pages/projects').then((m) => ({ default: m.ProjectsPage })));
 const NotFoundPage = lazy(() => import('@/pages/not-found').then((m) => ({ default: m.NotFoundPage })));
 
@@ -27,14 +26,6 @@ const router = createBrowserRouter([
                 element: (
                     <Suspense fallback={loadingFallback}>
                         <HomePage />
-                    </Suspense>
-                ),
-            },
-            {
-                path: '/experience',
-                element: (
-                    <Suspense fallback={loadingFallback}>
-                        <ExperiencePage />
                     </Suspense>
                 ),
             },
