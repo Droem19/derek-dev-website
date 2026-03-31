@@ -21,6 +21,7 @@ function getYearsOfExperience(startDate = new Date(2019, 4, 1)): number {
 
 export function HomePage() {
     const [showEmailCopiedAlert, setShowEmailCopiedAlert] = useState(false);
+    const [emailAlertPosition, setEmailAlertPosition] = useState<{ x: number; y: number } | null>(null);
     const emailAlertTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
     useEffect(
@@ -32,7 +33,12 @@ export function HomePage() {
         []
     );
 
-    const triggerEmailCopiedAlert = () => {
+    const triggerEmailCopiedAlert = (target: HTMLElement) => {
+        const rect = target.getBoundingClientRect();
+        setEmailAlertPosition({
+            x: rect.left + rect.width / 2,
+            y: rect.top - 10,
+        });
         setShowEmailCopiedAlert(true);
         if (emailAlertTimeoutRef.current) {
             clearTimeout(emailAlertTimeoutRef.current);
@@ -40,7 +46,7 @@ export function HomePage() {
 
         emailAlertTimeoutRef.current = setTimeout(() => {
             setShowEmailCopiedAlert(false);
-        }, 2200);
+        }, 1000);
     };
 
     const copyEmailWithExecCommand = () => {
@@ -64,16 +70,17 @@ export function HomePage() {
     const handleEmailClick = (event: MouseEvent<HTMLAnchorElement>) => {
         event.preventDefault();
         const copied = copyEmailWithExecCommand();
+        const target = event.currentTarget;
 
         if (copied) {
-            triggerEmailCopiedAlert();
+            triggerEmailCopiedAlert(target);
             return;
         }
 
         if (typeof navigator !== 'undefined' && navigator.clipboard?.writeText) {
             void navigator.clipboard
                 .writeText(EMAIL_ADDRESS)
-                .then(triggerEmailCopiedAlert)
+                .then(() => triggerEmailCopiedAlert(target))
                 .catch(() => {
                     // Browsers may block clipboard in some contexts.
                 });
@@ -150,8 +157,15 @@ export function HomePage() {
 
             <ExperienceTimeline />
 
-            {showEmailCopiedAlert ? (
-                <div className="pointer-events-none fixed right-4 bottom-4 z-50 sm:right-6 sm:bottom-6">
+            {showEmailCopiedAlert && emailAlertPosition ? (
+                <div
+                    className="pointer-events-none fixed z-50"
+                    style={{
+                        left: `${emailAlertPosition.x}px`,
+                        top: `${emailAlertPosition.y}px`,
+                        transform: 'translate(-50%, -100%)',
+                    }}
+                >
                     <Alert className="w-auto max-w-xs border-ring/40 bg-black/85 px-3 py-2 shadow-xl backdrop-blur-sm">
                         <AlertDescription className="flex items-center gap-2 text-xs sm:text-sm">
                             <Check className="h-4 w-4 shrink-0 text-ring" />

@@ -1,7 +1,9 @@
-import { Copyright, Mail } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { Check, Copyright, Mail } from 'lucide-react';
+import type { MouseEvent } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { NavLink, Outlet } from 'react-router-dom';
 
+import { Alert, AlertDescription } from '@/components/alert';
 import { GitHubIcon, LinkedInIcon } from '@/components/custom-icons';
 import faviconIco from '../../resources/favicon.ico';
 import favicon16 from '../../resources/favicon-16x16.png';
@@ -34,6 +36,9 @@ function getInitialOutlineColor(): OutlineColorId {
 
 export function RootLayout() {
     const [outlineColor, setOutlineColor] = useState<OutlineColorId>(getInitialOutlineColor);
+    const [showEmailCopiedAlert, setShowEmailCopiedAlert] = useState(false);
+    const [emailAlertPosition, setEmailAlertPosition] = useState<{ x: number; y: number } | null>(null);
+    const emailAlertTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
     useEffect(() => {
         document.title = 'Derek Roemhildt';
@@ -74,6 +79,69 @@ export function RootLayout() {
         document.documentElement.dataset.outlineColor = outlineColor;
         localStorage.setItem(OUTLINE_COLOR_STORAGE_KEY, outlineColor);
     }, [outlineColor]);
+
+    useEffect(
+        () => () => {
+            if (emailAlertTimeoutRef.current) {
+                clearTimeout(emailAlertTimeoutRef.current);
+            }
+        },
+        []
+    );
+
+    const triggerEmailCopiedAlert = (target: HTMLElement) => {
+        const rect = target.getBoundingClientRect();
+        setEmailAlertPosition({
+            x: rect.left + rect.width / 2,
+            y: rect.top - 10,
+        });
+        setShowEmailCopiedAlert(true);
+        if (emailAlertTimeoutRef.current) {
+            clearTimeout(emailAlertTimeoutRef.current);
+        }
+
+        emailAlertTimeoutRef.current = setTimeout(() => {
+            setShowEmailCopiedAlert(false);
+        }, 1000);
+    };
+
+    const copyEmailWithExecCommand = () => {
+        if (typeof document === 'undefined') {
+            return false;
+        }
+
+        const textArea = document.createElement('textarea');
+        textArea.value = EMAIL_ADDRESS;
+        textArea.setAttribute('readonly', '');
+        textArea.style.position = 'fixed';
+        textArea.style.opacity = '0';
+        document.body.appendChild(textArea);
+        textArea.select();
+        textArea.setSelectionRange(0, textArea.value.length);
+        const copied = document.execCommand('copy');
+        document.body.removeChild(textArea);
+        return copied;
+    };
+
+    const handleEmailClick = (event: MouseEvent<HTMLButtonElement>) => {
+        event.preventDefault();
+        const copied = copyEmailWithExecCommand();
+        const target = event.currentTarget;
+
+        if (copied) {
+            triggerEmailCopiedAlert(target);
+            return;
+        }
+
+        if (typeof navigator !== 'undefined' && navigator.clipboard?.writeText) {
+            void navigator.clipboard
+                .writeText(EMAIL_ADDRESS)
+                .then(() => triggerEmailCopiedAlert(target))
+                .catch(() => {
+                    // Browsers may block clipboard in some contexts.
+                });
+        }
+    };
 
     return (
         <div className="flex min-h-svh flex-col text-foreground">
@@ -118,14 +186,15 @@ export function RootLayout() {
                     </p>
 
                     <div className="flex items-center gap-2">
-                        <a
+                        <button
                             aria-label="Send email"
                             className="group inline-flex items-center gap-1.5 rounded-md border border-border bg-black/15 px-2.5 py-2 text-sm text-ring transition-[transform,box-shadow,border-color,background-color] duration-200 ease-out hover:-translate-y-0.5 hover:scale-105 hover:border-ring hover:bg-black/25 hover:shadow-[0_10px_20px_-12px_var(--color-ring)]"
-                            href={`mailto:${EMAIL_ADDRESS}`}
+                            onClick={handleEmailClick}
+                            type="button"
                         >
                             <Mail className="h-4 w-4 transition-transform duration-200 ease-out group-hover:scale-110" />
                             <span>Email</span>
-                        </a>
+                        </button>
                         <a
                             aria-label="LinkedIn profile"
                             className="group inline-flex items-center gap-1.5 rounded-md border border-border bg-black/15 px-2.5 py-2 text-sm text-ring transition-[transform,box-shadow,border-color,background-color] duration-200 ease-out hover:-translate-y-0.5 hover:scale-105 hover:border-ring hover:bg-black/25 hover:shadow-[0_10px_20px_-12px_var(--color-ring)]"
@@ -149,6 +218,24 @@ export function RootLayout() {
                     </div>
                 </div>
             </footer>
+
+            {showEmailCopiedAlert && emailAlertPosition ? (
+                <div
+                    className="pointer-events-none fixed z-50"
+                    style={{
+                        left: `${emailAlertPosition.x}px`,
+                        top: `${emailAlertPosition.y}px`,
+                        transform: 'translate(-50%, -100%)',
+                    }}
+                >
+                    <Alert className="w-auto max-w-xs border-ring/40 bg-black/85 px-3 py-2 shadow-xl backdrop-blur-sm">
+                        <AlertDescription className="flex items-center gap-2 text-xs sm:text-sm">
+                            <Check className="h-4 w-4 shrink-0 text-ring" />
+                            <span>Email copied to clipboard!</span>
+                        </AlertDescription>
+                    </Alert>
+                </div>
+            ) : null}
         </div>
     );
 }
