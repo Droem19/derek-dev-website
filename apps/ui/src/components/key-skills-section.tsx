@@ -1,17 +1,20 @@
-import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { type ComponentType, useMemo, useState } from 'react';
+import type { ComponentType } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import {
     AngularIcon,
     AwsIcon,
     CicdIcon,
     DockerIcon,
+    GitHubIcon,
     JavaIcon,
     MicroservicesIcon,
+    NodeIcon,
     PostgresIcon,
     PythonIcon,
     ReactIcon,
     RedisIcon,
+    SpringIcon,
     TypeScriptIcon,
 } from '@/components/custom-icons';
 
@@ -26,60 +29,74 @@ const SKILLS: SkillItem[] = [
     { label: 'PostgreSQL', icon: PostgresIcon },
     { label: 'CI/CD', icon: CicdIcon },
     { label: 'React', icon: ReactIcon },
+    { label: 'Node.js', icon: NodeIcon },
     { label: 'Docker', icon: DockerIcon },
     { label: 'Angular', icon: AngularIcon },
     { label: 'Java', icon: JavaIcon },
     { label: 'Python', icon: PythonIcon },
     { label: 'Redis', icon: RedisIcon },
     { label: 'Microservices', icon: MicroservicesIcon },
+    { label: 'git', icon: GitHubIcon },
+    { label: 'Spring', icon: SpringIcon },
 ];
 
+const COLLAPSED_HEIGHT_PX = 204; // 2 rows of h-24 cards + one gap-3 row gap
+
 export function KeySkillsSection() {
-    const [startIndex, setStartIndex] = useState(0);
-    const totalSkills = SKILLS.length;
+    const [expanded, setExpanded] = useState(false);
+    const [canExpand, setCanExpand] = useState(false);
+    const gridRef = useRef<HTMLDivElement | null>(null);
 
-    const orderedSkills = useMemo(() => [...SKILLS.slice(startIndex), ...SKILLS.slice(0, startIndex)], [startIndex]);
+    useEffect(() => {
+        const updateCanExpand = () => {
+            const gridElement = gridRef.current;
+            if (!gridElement) {
+                return;
+            }
 
-    const moveLeft = () => {
-        setStartIndex((current) => (current - 1 + totalSkills) % totalSkills);
-    };
+            setCanExpand(gridElement.scrollHeight > COLLAPSED_HEIGHT_PX + 1);
+        };
 
-    const moveRight = () => {
-        setStartIndex((current) => (current + 1) % totalSkills);
-    };
+        updateCanExpand();
+
+        const observer = new ResizeObserver(updateCanExpand);
+        if (gridRef.current) {
+            observer.observe(gridRef.current);
+        }
+
+        window.addEventListener('resize', updateCanExpand);
+
+        return () => {
+            observer.disconnect();
+            window.removeEventListener('resize', updateCanExpand);
+        };
+    }, []);
 
     return (
         <section className="mt-8 space-y-4">
             <h2 className="text-ring-gradient text-center text-3xl font-semibold tracking-tight sm:text-4xl">
                 Key Skills
             </h2>
-            <div className="flex items-center justify-between gap-2">
-                <button
-                    aria-label="Scroll skills left"
-                    className="inline-flex h-10 w-10 items-center justify-center rounded-md border border-border/70 bg-white/[0.03] text-foreground transition-colors hover:border-ring/60 hover:bg-white/[0.08] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/70"
-                    onClick={moveLeft}
-                    type="button"
-                >
-                    <ChevronLeft className="h-5 w-5 text-ring" />
-                </button>
-
-                <div className="max-w-4xl overflow-hidden">
-                    <div className="flex w-max min-w-full gap-3 px-1 py-1">
-                        {orderedSkills.map((skill) => (
-                            <SkillCard key={skill.label} skill={skill} />
-                        ))}
-                    </div>
+            <div
+                className={`overflow-hidden transition-[max-height] duration-300 ease-out ${expanded ? 'max-h-[1000px]' : 'max-h-[12.75rem]'}`}
+            >
+                <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7" ref={gridRef}>
+                    {SKILLS.map((skill) => (
+                        <SkillCard key={skill.label} skill={skill} />
+                    ))}
                 </div>
-
-                <button
-                    aria-label="Scroll skills right"
-                    className="inline-flex h-10 w-10 items-center justify-center rounded-md border border-border/70 bg-white/[0.03] text-foreground transition-colors hover:border-ring/60 hover:bg-white/[0.08] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/70"
-                    onClick={moveRight}
-                    type="button"
-                >
-                    <ChevronRight className="h-5 w-5 text-ring" />
-                </button>
             </div>
+            {canExpand ? (
+                <div className="flex justify-center">
+                    <button
+                        className="inline-flex items-center rounded-md border border-border/70 bg-white/[0.03] px-3 py-1.5 text-xs text-muted-foreground transition-colors hover:border-ring/60 hover:bg-white/[0.08] hover:text-foreground"
+                        onClick={() => setExpanded((current) => !current)}
+                        type="button"
+                    >
+                        {expanded ? 'Show less' : 'Show more'}
+                    </button>
+                </div>
+            ) : null}
         </section>
     );
 }
@@ -88,7 +105,7 @@ function SkillCard({ skill }: { skill: SkillItem }) {
     const Icon = skill.icon;
 
     return (
-        <article className="flex w-28 shrink-0 flex-col items-center justify-center gap-2.5 py-2 text-center sm:w-32">
+        <article className="flex h-24 min-w-0 flex-col items-center justify-center gap-2.5 py-2 text-center">
             {Icon ? (
                 <Icon className="h-11 w-11" />
             ) : (

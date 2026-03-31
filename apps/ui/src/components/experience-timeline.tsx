@@ -146,7 +146,7 @@ function ExperienceCard({ experience }: { experience: ExperienceItem }) {
 
                 {experience.highlights.length > HIGHLIGHT_PREVIEW_COUNT ? (
                     <button
-                        className="mt-4 text-xs font-medium text-ring transition-colors hover:text-ring/80"
+                        className="mt-4 inline-flex items-center rounded-md border border-border/70 bg-white/[0.03] px-2.5 py-1 text-xs font-semibold text-muted-foreground transition-[transform,box-shadow,border-color,background-color,color] duration-200 ease-out hover:-translate-y-0.5 hover:border-border hover:bg-white/[0.08] hover:text-foreground active:translate-y-0"
                         onClick={() => setExpanded((current) => !current)}
                         type="button"
                     >
