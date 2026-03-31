@@ -12,30 +12,10 @@ import favicon32 from '../../resources/favicon-32x32.png';
 const OUTLINE_COLOR_STORAGE_KEY = 'outline-color';
 const EMAIL_ADDRESS = 'droemhildt28@gmail.com';
 
-const OUTLINE_COLORS = [
-    { id: 'blue', label: 'Blue' },
-    { id: 'green', label: 'Green' },
-    { id: 'red', label: 'Red' },
-    { id: 'gray', label: 'Gray' },
-] as const;
-
-type OutlineColorId = (typeof OUTLINE_COLORS)[number]['id'];
-
-function isOutlineColorId(value: string): value is OutlineColorId {
-    return OUTLINE_COLORS.some((color) => color.id === value);
-}
-
-function getInitialOutlineColor(): OutlineColorId {
-    if (typeof window === 'undefined') {
-        return 'blue';
-    }
-
-    const storedOutlineColor = localStorage.getItem(OUTLINE_COLOR_STORAGE_KEY);
-    return storedOutlineColor && isOutlineColorId(storedOutlineColor) ? storedOutlineColor : 'blue';
-}
+const OUTLINE_COLORS = ['blue', 'green', 'red'] as const;
+type OutlineColorId = (typeof OUTLINE_COLORS)[number];
 
 export function RootLayout() {
-    const [outlineColor, setOutlineColor] = useState<OutlineColorId>(getInitialOutlineColor);
     const [showEmailCopiedAlert, setShowEmailCopiedAlert] = useState(false);
     const [emailAlertPosition, setEmailAlertPosition] = useState<{ x: number; y: number } | null>(null);
     const emailAlertTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -76,9 +56,15 @@ export function RootLayout() {
     }, []);
 
     useEffect(() => {
+        const storedOutlineColor = localStorage.getItem(OUTLINE_COLOR_STORAGE_KEY);
+        const outlineColor: OutlineColorId =
+            storedOutlineColor && OUTLINE_COLORS.includes(storedOutlineColor as OutlineColorId)
+                ? (storedOutlineColor as OutlineColorId)
+                : 'blue';
+
         document.documentElement.dataset.outlineColor = outlineColor;
         localStorage.setItem(OUTLINE_COLOR_STORAGE_KEY, outlineColor);
-    }, [outlineColor]);
+    }, []);
 
     useEffect(
         () => () => {
@@ -150,27 +136,9 @@ export function RootLayout() {
                     <nav aria-label="Home navigation" className="flex items-center gap-2">
                         <NavItem to="/">Home</NavItem>
                     </nav>
-                    <div className="flex items-center gap-4">
-                        <fieldset aria-label="Outline color selector" className="hidden items-center gap-2 sm:flex">
-                            <legend className="sr-only">Try Your Own Style</legend>
-                            {OUTLINE_COLORS.map((color) => (
-                                <button
-                                    aria-label={`Set outline color to ${color.label}`}
-                                    className={[
-                                        'h-6 w-6 rounded-full border-2 transition-[transform,box-shadow,border-color] duration-200 ease-out hover:-translate-y-0.5 hover:scale-110 hover:shadow-[0_10px_20px_-12px_var(--color-ring)] active:translate-y-0 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/60',
-                                        `outline-color-${color.id}`,
-                                        outlineColor === color.id ? 'ring-2 ring-foreground/70' : 'ring-0',
-                                    ].join(' ')}
-                                    key={color.id}
-                                    onClick={() => setOutlineColor(color.id)}
-                                    type="button"
-                                />
-                            ))}
-                        </fieldset>
-                        <nav aria-label="Main navigation" className="flex items-center gap-2">
-                            <NavItem to="/projects">Projects</NavItem>
-                        </nav>
-                    </div>
+                    <nav aria-label="Main navigation" className="flex items-center gap-2">
+                        <NavItem to="/projects">Projects</NavItem>
+                    </nav>
                 </div>
             </header>
 

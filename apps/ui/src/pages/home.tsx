@@ -10,6 +10,27 @@ import resumePdf from '../../resources/derek-roemhildt-resume.pdf';
 import profilePicture from '../../resources/profile-picture.png';
 
 const EMAIL_ADDRESS = 'droemhildt28@gmail.com';
+const OUTLINE_COLOR_STORAGE_KEY = 'outline-color';
+const OUTLINE_COLORS = [
+    { id: 'blue', label: 'Blue' },
+    { id: 'green', label: 'Green' },
+    { id: 'red', label: 'Red' },
+] as const;
+
+type OutlineColorId = (typeof OUTLINE_COLORS)[number]['id'];
+
+function isOutlineColorId(value: string): value is OutlineColorId {
+    return OUTLINE_COLORS.some((color) => color.id === value);
+}
+
+function getInitialOutlineColor(): OutlineColorId {
+    if (typeof window === 'undefined') {
+        return 'blue';
+    }
+
+    const storedOutlineColor = localStorage.getItem(OUTLINE_COLOR_STORAGE_KEY);
+    return storedOutlineColor && isOutlineColorId(storedOutlineColor) ? storedOutlineColor : 'blue';
+}
 
 function getYearsOfExperience(startDate = new Date(2019, 4, 1)): number {
     const now = new Date();
@@ -20,6 +41,7 @@ function getYearsOfExperience(startDate = new Date(2019, 4, 1)): number {
 }
 
 export function HomePage() {
+    const [outlineColor, setOutlineColor] = useState<OutlineColorId>(getInitialOutlineColor);
     const [showEmailCopiedAlert, setShowEmailCopiedAlert] = useState(false);
     const [emailAlertPosition, setEmailAlertPosition] = useState<{ x: number; y: number } | null>(null);
     const emailAlertTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -87,9 +109,15 @@ export function HomePage() {
         }
     };
 
+    const handleOutlineColorSelect = (nextOutlineColor: OutlineColorId) => {
+        setOutlineColor(nextOutlineColor);
+        document.documentElement.dataset.outlineColor = nextOutlineColor;
+        localStorage.setItem(OUTLINE_COLOR_STORAGE_KEY, nextOutlineColor);
+    };
+
     return (
         <section className="mx-auto w-full max-w-5xl px-4 py-10 sm:px-6 lg:px-8">
-            <section className="grid items-start gap-4 lg:grid-cols-[minmax(0,2.2fr)_minmax(13.5rem,0.8fr)] lg:items-stretch">
+            <section className="grid items-start gap-4 lg:grid-cols-[minmax(0,2.2fr)_minmax(13.5rem,0.8fr)]">
                 <section className="space-y-7 pt-1 sm:pt-2">
                     <div className="flex flex-col gap-6 md:flex-row md:items-start md:justify-between">
                         <div className="space-y-6">
@@ -141,14 +169,42 @@ export function HomePage() {
                     </p>
                 </section>
 
-                <div className="flex h-full flex-col gap-4">
-                    <section className="space-y-3 border-l border-border/60 pl-4 lg:flex-1">
+                <div className="flex flex-col gap-4">
+                    <section className="space-y-3 border-l border-border/60 pl-4">
                         <h2 className="text-ring-gradient text-xl font-semibold sm:text-2xl">About Me</h2>
                         <p className="text-base leading-relaxed text-muted-foreground sm:text-lg">
                             When I&apos;m not building software, I spend most of my time staying active and exploring
                             new places. Some of my favorite hobbies include working out, hiking, traveling with my wife
                             and dog, and cooking up delicious barbecue for friends and family.
                         </p>
+
+                        <div className="space-y-2 pt-1">
+                            <h3 className="text-ring-gradient text-xl font-semibold sm:text-2xl">Theme</h3>
+                            <div className="flex flex-wrap items-center gap-2">
+                                {OUTLINE_COLORS.map((color) => (
+                                    <button
+                                        aria-label={`Set theme color to ${color.label}`}
+                                        className={[
+                                            'inline-flex items-center gap-2 rounded-md border px-3 py-1.5 text-xs font-medium transition-[transform,box-shadow,border-color,background-color,color] duration-200 ease-out hover:-translate-y-0.5 hover:shadow-[0_10px_20px_-12px_var(--color-ring)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/70',
+                                            outlineColor === color.id
+                                                ? 'border-ring/70 bg-white/[0.09] text-foreground'
+                                                : 'border-border/70 bg-white/[0.03] text-muted-foreground hover:border-ring/50 hover:bg-white/[0.07] hover:text-foreground',
+                                        ].join(' ')}
+                                        key={color.id}
+                                        onClick={() => handleOutlineColorSelect(color.id)}
+                                        type="button"
+                                    >
+                                        <span
+                                            className={[
+                                                'h-2.5 w-2.5 rounded-full border border-white/20',
+                                                `outline-color-${color.id}`,
+                                            ].join(' ')}
+                                        />
+                                        {color.label}
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
                     </section>
                 </div>
             </section>

@@ -73,7 +73,7 @@ export function KeySkillsSection() {
     }, []);
 
     return (
-        <section className="mt-8 space-y-4">
+        <section className="mt-5 space-y-4">
             <h2 className="text-ring-gradient text-center text-3xl font-semibold tracking-tight sm:text-4xl">
                 Key Skills
             </h2>
