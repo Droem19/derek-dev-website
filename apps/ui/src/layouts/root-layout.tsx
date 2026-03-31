@@ -1,5 +1,5 @@
 import { Copyright, Mail } from 'lucide-react';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { NavLink, Outlet } from 'react-router-dom';
 
 import { GitHubIcon, LinkedInIcon } from '@/components/custom-icons';
@@ -23,17 +23,20 @@ function isOutlineColorId(value: string): value is OutlineColorId {
     return OUTLINE_COLORS.some((color) => color.id === value);
 }
 
+function getInitialOutlineColor(): OutlineColorId {
+    if (typeof window === 'undefined') {
+        return 'blue';
+    }
+
+    const storedOutlineColor = localStorage.getItem(OUTLINE_COLOR_STORAGE_KEY);
+    return storedOutlineColor && isOutlineColorId(storedOutlineColor) ? storedOutlineColor : 'blue';
+}
+
 export function RootLayout() {
+    const [outlineColor, setOutlineColor] = useState<OutlineColorId>(getInitialOutlineColor);
+
     useEffect(() => {
         document.title = 'Derek Roemhildt';
-
-        const storedOutlineColor = localStorage.getItem(OUTLINE_COLOR_STORAGE_KEY);
-        if (storedOutlineColor && isOutlineColorId(storedOutlineColor)) {
-            document.documentElement.dataset.outlineColor = storedOutlineColor;
-        } else {
-            document.documentElement.dataset.outlineColor = 'blue';
-            localStorage.setItem(OUTLINE_COLOR_STORAGE_KEY, 'blue');
-        }
 
         const setFavicon = (selector: string, href: string, type?: string) => {
             const existing = document.head.querySelector<HTMLLinkElement>(selector);
@@ -67,6 +70,11 @@ export function RootLayout() {
         setFavicon('link[rel="icon"]:not([sizes])', faviconIco, 'image/x-icon');
     }, []);
 
+    useEffect(() => {
+        document.documentElement.dataset.outlineColor = outlineColor;
+        localStorage.setItem(OUTLINE_COLOR_STORAGE_KEY, outlineColor);
+    }, [outlineColor]);
+
     return (
         <div className="flex min-h-svh flex-col text-foreground">
             <header className="sticky top-0 z-20 border-b border-border/80 bg-black/10">
@@ -74,9 +82,27 @@ export function RootLayout() {
                     <nav aria-label="Home navigation" className="flex items-center gap-2">
                         <NavItem to="/">Home</NavItem>
                     </nav>
-                    <nav aria-label="Main navigation" className="flex items-center gap-2">
-                        <NavItem to="/projects">Projects</NavItem>
-                    </nav>
+                    <div className="flex items-center gap-4">
+                        <fieldset aria-label="Outline color selector" className="hidden items-center gap-2 sm:flex">
+                            <legend className="sr-only">Try Your Own Style</legend>
+                            {OUTLINE_COLORS.map((color) => (
+                                <button
+                                    aria-label={`Set outline color to ${color.label}`}
+                                    className={[
+                                        'h-6 w-6 rounded-full border-2 transition-[transform,box-shadow,border-color] duration-200 ease-out hover:-translate-y-0.5 hover:scale-110 hover:shadow-[0_10px_20px_-12px_var(--color-ring)] active:translate-y-0 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/60',
+                                        `outline-color-${color.id}`,
+                                        outlineColor === color.id ? 'ring-2 ring-foreground/70' : 'ring-0',
+                                    ].join(' ')}
+                                    key={color.id}
+                                    onClick={() => setOutlineColor(color.id)}
+                                    type="button"
+                                />
+                            ))}
+                        </fieldset>
+                        <nav aria-label="Main navigation" className="flex items-center gap-2">
+                            <NavItem to="/projects">Projects</NavItem>
+                        </nav>
+                    </div>
                 </div>
             </header>
 

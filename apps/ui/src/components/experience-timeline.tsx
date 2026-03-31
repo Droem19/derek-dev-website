@@ -90,7 +90,7 @@ export function ExperienceTimeline() {
     return (
         <section className="mt-10" id="experience-timeline">
             <div className="space-y-2">
-                <h2 className="text-3xl font-semibold tracking-tight text-ring sm:text-4xl">
+                <h2 className="text-ring-gradient text-3xl font-semibold tracking-tight sm:text-4xl">
                     My Professional Experience
                 </h2>
                 <p className="max-w-2xl text-sm leading-6 text-muted-foreground sm:text-base">
@@ -109,8 +109,8 @@ export function ExperienceTimeline() {
                             <div className="rounded-2xl border border-border/80 bg-card/70 p-5 shadow-[0_0_0_1px_rgba(255,255,255,0.02)] backdrop-blur-sm sm:p-6">
                                 <div className="flex flex-col gap-1">
                                     <div className="space-y-1">
-                                        <h3 className="flex flex-wrap items-center gap-x-2 gap-y-1 text-xl font-semibold text-ring">
-                                            <span>{experience.company}</span>
+                                        <h3 className="flex flex-wrap items-center gap-x-2 gap-y-1 text-xl font-semibold">
+                                            <span className="text-ring-gradient">{experience.company}</span>
                                             <span className="text-xs font-medium text-muted-foreground">
                                                 {experience.timeframe}
                                             </span>
