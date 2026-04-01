@@ -44,6 +44,8 @@
     --sidebar-ring: oklch(0.556 0 0);
     --bg-gradient-start: oklch(0.64 0.16 254 / 0.34);
     --bg-gradient-end: oklch(0.12 0 0 / 0.94);
+    --bg-diagonal-line-soft: oklch(0.92 0.02 254 / 0.035);
+    --bg-diagonal-line-strong: oklch(0.92 0.02 254 / 0.055);
     --text-gradient-end: oklch(0.94 0.01 260);
     --grid-cell-size: 40px;
     --grid-line: rgba(255, 255, 255, 0.12);
@@ -105,6 +107,8 @@ html[data-outline-color="blue"] {
     --sidebar-ring: oklch(0.64 0.16 254);
     --bg-gradient-start: oklch(0.64 0.16 254 / 0.34);
     --bg-gradient-end: oklch(0.12 0 0 / 0.94);
+    --bg-diagonal-line-soft: oklch(0.78 0.08 254 / 0.03);
+    --bg-diagonal-line-strong: oklch(0.82 0.09 254 / 0.05);
 }
 
 html[data-outline-color="green"] {
@@ -114,6 +118,8 @@ html[data-outline-color="green"] {
     --sidebar-ring: oklch(0.68 0.15 152);
     --bg-gradient-start: oklch(0.68 0.15 152 / 0.33);
     --bg-gradient-end: oklch(0.12 0 0 / 0.94);
+    --bg-diagonal-line-soft: oklch(0.82 0.09 152 / 0.03);
+    --bg-diagonal-line-strong: oklch(0.85 0.11 152 / 0.05);
 }
 
 html[data-outline-color="red"] {
@@ -123,6 +129,8 @@ html[data-outline-color="red"] {
     --sidebar-ring: oklch(0.66 0.16 18);
     --bg-gradient-start: oklch(0.66 0.16 18 / 0.33);
     --bg-gradient-end: oklch(0.12 0 0 / 0.94);
+    --bg-diagonal-line-soft: oklch(0.82 0.09 18 / 0.03);
+    --bg-diagonal-line-strong: oklch(0.85 0.11 18 / 0.05);
 }
 
 @theme inline {
@@ -174,12 +182,54 @@ html[data-outline-color="red"] {
     }
     body {
         @apply bg-background text-foreground;
+        position: relative;
         font-family: var(--font-body);
         background-image:
             radial-gradient(circle at 20% 0%, rgba(255, 255, 255, 0.06), transparent 40%),
             linear-gradient(to top right, var(--bg-gradient-start), var(--bg-gradient-end));
         background-size: auto, auto;
         background-attachment: fixed;
+    }
+    body::before,
+    body::after {
+        content: "";
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        width: min(44vw, 680px);
+        pointer-events: none;
+    }
+    body::before {
+        left: 0;
+        -webkit-mask-image: linear-gradient(to right, transparent 0%, black 24%, black 92%, transparent 100%);
+        mask-image: linear-gradient(to right, transparent 0%, black 24%, black 92%, transparent 100%);
+        background-image:
+            linear-gradient(119deg, transparent 7.8%, var(--bg-diagonal-line-soft) 7.8% 7.92%, transparent 7.92%),
+            linear-gradient(132deg, transparent 19.6%, var(--bg-diagonal-line-strong) 19.6% 19.92%, transparent 19.92%),
+            linear-gradient(111deg, transparent 34.4%, var(--bg-diagonal-line-soft) 34.4% 34.52%, transparent 34.52%),
+            linear-gradient(139deg, transparent 51.3%, var(--bg-diagonal-line-strong) 51.3% 51.62%, transparent 51.62%),
+            linear-gradient(124deg, transparent 66.7%, var(--bg-diagonal-line-soft) 66.7% 66.82%, transparent 66.82%),
+            linear-gradient(145deg, transparent 82.5%, var(--bg-diagonal-line-strong) 82.5% 82.82%, transparent 82.82%),
+            linear-gradient(102deg, transparent 26.2%, var(--bg-diagonal-line-strong) 26.2% 26.66%, transparent 26.66%),
+            linear-gradient(97deg, transparent 44.9%, var(--bg-diagonal-line-soft) 44.9% 45.08%, transparent 45.08%),
+            linear-gradient(109deg, transparent 62.8%, var(--bg-diagonal-line-strong) 62.8% 63.24%, transparent 63.24%),
+            linear-gradient(114deg, transparent 90.8%, var(--bg-diagonal-line-soft) 90.8% 90.98%, transparent 90.98%);
+    }
+    body::after {
+        right: 0;
+        -webkit-mask-image: linear-gradient(to left, transparent 0%, black 24%, black 92%, transparent 100%);
+        mask-image: linear-gradient(to left, transparent 0%, black 24%, black 92%, transparent 100%);
+        background-image:
+            linear-gradient(146deg, transparent 9.1%, var(--bg-diagonal-line-soft) 9.1% 9.22%, transparent 9.22%),
+            linear-gradient(154deg, transparent 22.8%, var(--bg-diagonal-line-strong) 22.8% 23.12%, transparent 23.12%),
+            linear-gradient(137deg, transparent 40.6%, var(--bg-diagonal-line-soft) 40.6% 40.72%, transparent 40.72%),
+            linear-gradient(158deg, transparent 58.9%, var(--bg-diagonal-line-strong) 58.9% 59.22%, transparent 59.22%),
+            linear-gradient(143deg, transparent 73.4%, var(--bg-diagonal-line-soft) 73.4% 73.52%, transparent 73.52%),
+            linear-gradient(152deg, transparent 89.7%, var(--bg-diagonal-line-strong) 89.7% 90.02%, transparent 90.02%),
+            linear-gradient(103deg, transparent 24.6%, var(--bg-diagonal-line-strong) 24.6% 25.08%, transparent 25.08%),
+            linear-gradient(96deg, transparent 47.3%, var(--bg-diagonal-line-soft) 47.3% 47.48%, transparent 47.48%),
+            linear-gradient(108deg, transparent 68.5%, var(--bg-diagonal-line-strong) 68.5% 68.96%, transparent 68.96%),
+            linear-gradient(116deg, transparent 94.2%, var(--bg-diagonal-line-soft) 94.2% 94.38%, transparent 94.38%);
     }
     html {
         @apply font-sans;
