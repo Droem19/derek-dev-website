@@ -6,7 +6,7 @@ import { Alert, AlertDescription } from '@/components/alert';
 import { GitHubIcon, LinkedInIcon } from '@/components/custom-icons';
 import { ExperienceTimeline } from '@/components/experience-timeline';
 import { KeySkillsSection } from '@/components/key-skills-section';
-import resumePdf from '../../resources/derek-roemhildt-2026-resume.pdf';
+import resumePdf from '../../resources/derek-roemhildt-resume-2026.pdf';
 import profilePicture from '../../resources/profile-picture.png';
 
 const EMAIL_ADDRESS = 'droemhildt28@gmail.com';
