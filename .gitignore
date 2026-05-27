@@ -38,3 +38,6 @@ cdk.context.json
 
 # TypeScript build info files
 *.tsbuildinfo
+
+#
+derek-future-ideas.txt
