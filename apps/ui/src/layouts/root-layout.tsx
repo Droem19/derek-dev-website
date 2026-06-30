@@ -132,12 +132,9 @@ export function RootLayout() {
     return (
         <div className="flex min-h-svh flex-col text-foreground">
             <header className="sticky top-0 z-20 border-b border-border/60 bg-background/70 shadow-[0_8px_24px_-20px_rgba(0,0,0,0.7)] backdrop-blur-md">
-                <div className="mx-auto flex w-full max-w-5xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
+                <div className="mx-auto flex w-full max-w-5xl items-center px-4 py-4 sm:px-6 lg:px-8">
                     <nav aria-label="Home navigation" className="flex items-center gap-2">
                         <NavItem to="/">Home</NavItem>
-                    </nav>
-                    <nav aria-label="Main navigation" className="flex items-center gap-2">
-                        <NavItem to="/projects">Projects</NavItem>
                     </nav>
                 </div>
             </header>
