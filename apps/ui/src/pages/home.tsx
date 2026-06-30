@@ -164,7 +164,7 @@ export function HomePage() {
                     <p className="max-w-3xl text-base leading-relaxed text-muted-foreground sm:text-lg">
                         I&apos;m a full-stack software engineer focused on building reliable, practical systems that
                         simplify complex workflows at scale. I specialize in SaaS platforms, automation, and data
-                        pipelines. I lean toward backend development and infrastructure, but I ship complete solutions
+                        pipelines. I lean toward backend development and infrastructure, but I regularly ship complete solutions
                         across both frontend and backend for real-world business needs.
                     </p>
                 </section>
