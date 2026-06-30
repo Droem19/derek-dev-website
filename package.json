@@ -19,6 +19,7 @@
         "synth": "pnpm run build && pnpm --filter infra exec cdk synth --profile DRoemhildt19",
         "diff": "pnpm run build && pnpm --filter infra exec cdk diff --profile DRoemhildt19",
         "deploy": "pnpm run build && pnpm --filter infra exec cdk deploy --require-approval never --profile DRoemhildt19",
+        "github-action-deploy": "pnpm run build && pnpm --filter infra exec cdk deploy --require-approval never",
         "destroy": "pnpm run build && pnpm --filter infra exec cdk destroy --force --profile DRoemhildt19"
     },
     "devDependencies": {

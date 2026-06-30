@@ -85,3 +85,8 @@ Use `us-east-1` for CloudFront certificate compatibility.
     ```
 
 If `siteSubdomain` is empty, the root domain is used directly.
+
+## GitHub Actions Deploy
+The repo includes a workflow at `.github/workflows/deploy.yml` that deploys on pushes to `main` and can also be run manually.
+
+The workflow uses the checked-in CDK domain defaults from `infra/cdk.json`, deploys to `us-east-1`, and runs `pnpm run github-action-deploy`.
