@@ -11,9 +11,11 @@ import {
 import type { Construct } from 'constructs';
 
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 type UIStackProps = cdk.StackProps & {
     rootDomain: string;
+    hostedZoneId: string;
     siteDomain: string;
 };
 
@@ -27,8 +29,9 @@ export class UIStack extends cdk.Stack {
             );
         }
 
-        const hostedZone = route53.HostedZone.fromLookup(this, 'HostedZone', {
-            domainName: props.rootDomain,
+        const hostedZone = route53.HostedZone.fromHostedZoneAttributes(this, 'HostedZone', {
+            hostedZoneId: props.hostedZoneId,
+            zoneName: props.rootDomain,
         });
 
         const siteBucket = new s3.Bucket(this, 'SiteBucket', {
@@ -41,12 +44,16 @@ export class UIStack extends cdk.Stack {
             autoDeleteObjects: false,
         });
 
-        const domainNames =
-            props.siteDomain === props.rootDomain ? [props.rootDomain] : [props.rootDomain, props.siteDomain];
+        const wwwSiteDomain = `www.${props.siteDomain}`;
+        const domainNames = [props.siteDomain, wwwSiteDomain];
+
+        cdk.Tags.of(this).add('Project', this.stackName);
+        cdk.Tags.of(this).add('SiteDomain', props.siteDomain);
+        cdk.Tags.of(this).add('WwwSiteDomain', wwwSiteDomain);
 
         const certificate = new acm.Certificate(this, 'SiteCertificate', {
-            domainName: props.rootDomain,
-            subjectAlternativeNames: domainNames.filter((domain) => domain !== props.rootDomain),
+            domainName: props.siteDomain,
+            subjectAlternativeNames: [wwwSiteDomain],
             validation: acm.CertificateValidation.fromDns(hostedZone),
         });
 
@@ -77,35 +84,36 @@ export class UIStack extends cdk.Stack {
             enableLogging: true,
         });
 
-        new route53.ARecord(this, 'RootARecord', {
+        const primaryRecordName =
+            props.siteDomain === props.rootDomain ? undefined : props.siteDomain.replace(`.${props.rootDomain}`, '');
+        const wwwRecordName = wwwSiteDomain.replace(`.${props.rootDomain}`, '');
+
+        new route53.ARecord(this, 'PrimaryDomainARecord', {
             zone: hostedZone,
-            recordName: undefined,
+            recordName: primaryRecordName,
             target: route53.RecordTarget.fromAlias(new route53Targets.CloudFrontTarget(distribution)),
         });
 
-        new route53.AaaaRecord(this, 'RootAaaaRecord', {
+        new route53.AaaaRecord(this, 'PrimaryDomainAaaaRecord', {
             zone: hostedZone,
-            recordName: undefined,
+            recordName: primaryRecordName,
             target: route53.RecordTarget.fromAlias(new route53Targets.CloudFrontTarget(distribution)),
         });
 
-        if (props.siteDomain !== props.rootDomain) {
-            const subdomainRecordName = props.siteDomain.replace(`.${props.rootDomain}`, '');
+        new route53.ARecord(this, 'WwwDomainARecord', {
+            zone: hostedZone,
+            recordName: wwwRecordName,
+            target: route53.RecordTarget.fromAlias(new route53Targets.CloudFrontTarget(distribution)),
+        });
 
-            new route53.ARecord(this, 'SiteARecord', {
-                zone: hostedZone,
-                recordName: subdomainRecordName,
-                target: route53.RecordTarget.fromAlias(new route53Targets.CloudFrontTarget(distribution)),
-            });
+        new route53.AaaaRecord(this, 'WwwDomainAaaaRecord', {
+            zone: hostedZone,
+            recordName: wwwRecordName,
+            target: route53.RecordTarget.fromAlias(new route53Targets.CloudFrontTarget(distribution)),
+        });
 
-            new route53.AaaaRecord(this, 'SiteAaaaRecord', {
-                zone: hostedZone,
-                recordName: subdomainRecordName,
-                target: route53.RecordTarget.fromAlias(new route53Targets.CloudFrontTarget(distribution)),
-            });
-        }
-
-        const uiDistPath = path.resolve(process.cwd(), '../apps/ui/dist');
+        const stackSourceDir = path.dirname(fileURLToPath(import.meta.url));
+        const uiDistPath = path.resolve(stackSourceDir, '../../ui/dist');
 
         new s3deploy.BucketDeployment(this, 'DeployWebsite', {
             destinationBucket: siteBucket,
@@ -119,6 +127,11 @@ export class UIStack extends cdk.Stack {
         new cdk.CfnOutput(this, 'SiteDomainOutput', {
             value: `https://${props.siteDomain}`,
             description: 'Portfolio website URL',
+        });
+
+        new cdk.CfnOutput(this, 'WwwSiteDomainOutput', {
+            value: `https://${wwwSiteDomain}`,
+            description: 'Portfolio website www URL',
         });
 
         new cdk.CfnOutput(this, 'DistributionIdOutput', {

@@ -2,12 +2,11 @@ import { CalendarDays, Check, Code2, Download, Mail, MapPin } from 'lucide-react
 import type { ComponentType, MouseEvent, SVGProps } from 'react';
 import { useEffect, useRef, useState } from 'react';
 
-import { Alert, AlertDescription } from '@/components/alert';
-import { GitHubIcon, LinkedInIcon } from '@/components/custom-icons';
-import { ExperienceTimeline } from '@/components/experience-timeline';
-import { KeySkillsSection } from '@/components/key-skills-section';
 import resumePdf from '../../resources/derek-roemhildt-resume-2026.pdf';
 import profilePicture from '../../resources/profile-picture.png';
+import { GitHubIcon, LinkedInIcon } from '../components/custom-icons';
+import { ExperienceTimeline } from '../components/experience-timeline';
+import { KeySkillsSection } from '../components/key-skills-section';
 
 const EMAIL_ADDRESS = 'droemhildt28@gmail.com';
 const OUTLINE_COLOR_STORAGE_KEY = 'outline-color';
@@ -164,8 +163,8 @@ export function HomePage() {
                     <p className="max-w-3xl text-base leading-relaxed text-muted-foreground sm:text-lg">
                         I&apos;m a full-stack software engineer focused on building reliable, practical systems that
                         simplify complex workflows at scale. I specialize in SaaS platforms, automation, and data
-                        pipelines. I lean toward backend development and infrastructure, but I regularly ship complete solutions
-                        across both frontend and backend for real-world business needs.
+                        pipelines. I lean toward backend development and infrastructure, but I regularly ship complete
+                        solutions across both frontend and backend for real-world business needs.
                     </p>
                 </section>
 
@@ -174,7 +173,7 @@ export function HomePage() {
                         <h2 className="text-ring-gradient text-xl font-semibold sm:text-2xl">About Me</h2>
                         <p className="text-base leading-relaxed text-muted-foreground sm:text-lg">
                             When I&apos;m not building software, I spend most of my time staying active and exploring
-                            new places. Some of my favorite hobbies include working out, hiking, traveling with my wife
+                            new places. Some of my favorite hobbies include hiking, working out, traveling with my wife
                             and dog, and cooking up delicious barbecue for friends and family.
                         </p>
 
@@ -222,12 +221,15 @@ export function HomePage() {
                         transform: 'translate(-50%, -100%)',
                     }}
                 >
-                    <Alert className="w-auto max-w-xs border-ring/40 bg-black/85 px-3 py-2 shadow-xl backdrop-blur-sm">
-                        <AlertDescription className="flex items-center gap-2 text-xs sm:text-sm">
+                    <div
+                        className="relative w-auto max-w-xs rounded-lg border border-ring/40 bg-black/85 px-3 py-2 text-sm shadow-xl backdrop-blur-sm"
+                        role="status"
+                    >
+                        <div className="flex items-center gap-2 text-xs sm:text-sm">
                             <Check className="h-4 w-4 shrink-0 text-ring" />
                             <span>Email copied to clipboard!</span>
-                        </AlertDescription>
-                    </Alert>
+                        </div>
+                    </div>
                 </div>
             ) : null}
         </section>

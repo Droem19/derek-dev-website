@@ -16,7 +16,7 @@ import {
     RedisIcon,
     SpringIcon,
     TypeScriptIcon,
-} from '@/components/custom-icons';
+} from './custom-icons';
 
 type SkillItem = {
     label: string;

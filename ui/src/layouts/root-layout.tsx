@@ -3,11 +3,10 @@ import type { MouseEvent } from 'react';
 import { useEffect, useRef, useState } from 'react';
 import { NavLink, Outlet } from 'react-router-dom';
 
-import { Alert, AlertDescription } from '@/components/alert';
-import { GitHubIcon, LinkedInIcon } from '@/components/custom-icons';
 import faviconIco from '../../resources/favicon.ico';
 import favicon16 from '../../resources/favicon-16x16.png';
 import favicon32 from '../../resources/favicon-32x32.png';
+import { GitHubIcon, LinkedInIcon } from '../components/custom-icons';
 
 const OUTLINE_COLOR_STORAGE_KEY = 'outline-color';
 const EMAIL_ADDRESS = 'droemhildt28@gmail.com';
@@ -193,12 +192,15 @@ export function RootLayout() {
                         transform: 'translate(-50%, -100%)',
                     }}
                 >
-                    <Alert className="w-auto max-w-xs border-ring/40 bg-black/85 px-3 py-2 shadow-xl backdrop-blur-sm">
-                        <AlertDescription className="flex items-center gap-2 text-xs sm:text-sm">
+                    <div
+                        className="relative w-auto max-w-xs rounded-lg border border-ring/40 bg-black/85 px-3 py-2 text-sm shadow-xl backdrop-blur-sm"
+                        role="status"
+                    >
+                        <div className="flex items-center gap-2 text-xs sm:text-sm">
                             <Check className="h-4 w-4 shrink-0 text-ring" />
                             <span>Email copied to clipboard!</span>
-                        </AlertDescription>
-                    </Alert>
+                        </div>
+                    </div>
                 </div>
             ) : null}
         </div>

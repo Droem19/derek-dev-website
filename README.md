@@ -3,90 +3,86 @@
 This project is a portfolio site to showcase personal projects, professional experience, and any other work over time.
 
 ## Tech Stack
+
 - TypeScript
 - React
 - Vite
-- AWS CDK (TypeScript)
+- Tailwind
+- AWS CDK
+- Biome
 
 ## Repo Structure
-- `apps/ui` - Frontend Portfolio App
-- `apps/api` - Backend/API App (placeholder for now)
-- `infra` - AWS infrastructure for static site hosting
+
+- `ui` - Vite React portfolio app 
+- `ui/src/pages` - Route-level pages for home, projects, and not found states
+- `ui/src/layouts` - Shared app shell with navigation, footer, favicon setup, and route outlet
+- `ui/src/components` - Reusable UI pieces including the error boundary, timeline, skills section, and custom social icons
+- `ui/resources` - Static assets imported by the UI, including favicons, profile image, and resume PDF
+- `infra` - CDK app and stack for static website hosting
+- `.github/workflows/deploy.yml` - Production deploy workflow for pushes to `main` and manual dispatches
 
 ## Getting Started (Local Development)
-### Prerequisites
-- Node.js: `24.2.0`
-- pnpm: `10.28.2`
-- AWS CLI configured with your credentials
-- CDK bootstrap done in target AWS account/region (`us-east-1`)
 
-1. Install dependencies:
-    ```
-    pnpm install
-    ```
+- Node.js `24.12.0`
+- pnpm `10.28.2`
+- AWS CLI configured for deployments
+- AWS SSO access for the `DRoemhildt19` profile
 
-2. Run the UI App
-    ```bash
-    pnpm dev
-    ```
+## Local Development
 
-## Add UI Components (shadcn)
-This repo uses shadcn in `apps/ui` with config at `apps/ui/components.json`.
+Install dependencies from the repo root:
 
-1. Add one or more components from the repo root:
-    ```bash
-    pnpm --filter ui exec shadcn add button card input dialog
-    ```
-
-2. Generated files are written to:
-    - `apps/ui/src/components/ui/*`
-    - `apps/ui/src/lib/utils.ts` (if needed)
-
-3. Import components in UI code:
-    ```tsx
-    import { Button } from "@/components/ui/button";
-    ```
-
-4. If a component prompts to overwrite a modified file, review before accepting.
-
-Reference component list: https://ui.shadcn.com/docs/components
-
-## Build UI
 ```bash
-pnpm build
+pnpm install
 ```
 
-## Deploy Infrastructure + Website
-The CDK stack creates:
-- S3 private bucket for site assets
-- CloudFront distribution
-- ACM certificate
-- Route53 A/AAAA records
-- Bucket deployment from `apps/ui/dist`
+Run the local UI dev server:
 
-Use `us-east-1` for CloudFront certificate compatibility.
+```bash
+pnpm run local-ui
+```
 
-1. Bootstrap (one-time per account/region):
-    ```bash
-    pnpm infra:bootstrap -- aws://<account-id>/us-east-1
-    ```
+## Infrastructure
 
-2. Build UI assets:
-    ```bash
-    pnpm build
-    ```
+The CDK app lives in `infra` and defines the `derek-dev-website-ui` stack. It deploys the built UI from `ui/dist`.
 
-3. Deploy with domain context:
-    ```bash
-    $env:CDK_DEFAULT_ACCOUNT="<account-id>"
-    $env:CDK_DEFAULT_REGION="us-east-1"
-    pnpm infra:synth -- -c rootDomain=example.com -c siteSubdomain=www
-    pnpm infra:deploy -- -c rootDomain=example.com -c siteSubdomain=www
-    ```
+The stack creates:
 
-If `siteSubdomain` is empty, the root domain is used directly.
+- Private S3 bucket for static site assets
+- CloudFront distribution with Origin Access Control
+- ACM certificate for the primary domain and `www` domain
+- Route53 A and AAAA alias records for both domains
+- SPA fallback responses that serve `index.html` for CloudFront 403 and 404 responses
+- Bucket deployment with CloudFront invalidation
+
+## Deploying the app
+
+Log in with AWS SSO:
+
+```bash
+pnpm run sso
+```
+
+Preview the stack:
+
+```bash
+pnpm run diff
+```
+
+Deploy the stack:
+
+```bash
+pnpm run deploy
+```
 
 ## GitHub Actions Deploy
-The repo includes a workflow at `.github/workflows/deploy.yml` that deploys on pushes to `main` and can also be run manually.
 
-The workflow uses the checked-in CDK domain defaults from `infra/cdk.json`, deploys to `us-east-1`, and runs `pnpm run github-action-deploy`.
+The deploy workflow runs on pushes to the `main` branch and can also be started manually from GitHub Actions.
+
+The workflow:
+
+- Installs pnpm and Node.js
+- Installs dependencies with `pnpm install --frozen-lockfile`
+- Assumes the AWS role from Github's `AWS_DEPLOY_ROLE_ARN` secret
+- Runs `pnpm run github-action-deploy`
+- Deploys to `us-east-1`

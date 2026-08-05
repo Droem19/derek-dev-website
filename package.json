@@ -1,28 +1,35 @@
 {
     "name": "derek-dev-website",
-    "description": "Personal dev website for Derek Roemhildt",
+    "description": "Personal Dev Website for Derek Roemhildt",
     "private": true,
     "packageManager": "pnpm@10.28.2",
     "engines": {
-        "node": "24.2.0",
+        "node": "24.12.0",
         "pnpm": "10.28.2"
     },
     "engineStrict": true,
     "scripts": {
-        "dev": "pnpm --filter ui dev",
-        "build": "pnpm --filter ui build && pnpm --filter infra build",
-        "typecheck": "pnpm --filter ui exec tsc --noEmit && pnpm --filter infra typecheck",
-        "format": "biome format --write .",
-        "lint": "biome check .",
+        "local-ui": "pnpm --filter ui dev",
 
-        "sso": "aws sso login --sso-session align-software",
-        "synth": "pnpm run build && pnpm --filter infra exec cdk synth --profile DRoemhildt19",
-        "diff": "pnpm run build && pnpm --filter infra exec cdk diff --profile DRoemhildt19",
-        "deploy": "pnpm run build && pnpm --filter infra exec cdk deploy --require-approval never --profile DRoemhildt19",
-        "github-action-deploy": "pnpm run build && pnpm --filter infra exec cdk deploy --require-approval never",
-        "destroy": "pnpm run build && pnpm --filter infra exec cdk destroy --force --profile DRoemhildt19"
+        "build": "pnpm --recursive --if-present build",
+        "typecheck": "pnpm --recursive --if-present typecheck",
+        "format": "biome check --write .",
+
+        "sso": "aws sso login --profile DRoemhildt19",
+
+        "infra-prepare": "pnpm --filter ui build",
+
+        "presynth": "pnpm infra-prepare",
+        "synth": "pnpm --filter infra exec cdk synth --profile DRoemhildt19",
+
+        "prediff": "pnpm infra-prepare",
+        "diff": "pnpm --filter infra exec cdk diff --profile DRoemhildt19",
+
+        "predeploy": "pnpm infra-prepare",
+        "deploy": "pnpm --filter infra exec cdk deploy --profile DRoemhildt19 --require-approval never",
+        "github-action-deploy": "biome check . && pnpm run typecheck && pnpm run build && pnpm --filter infra exec cdk deploy --require-approval never"
     },
     "devDependencies": {
-        "@biomejs/biome": "2.4.4"
+        "@biomejs/biome": "2.5.5"
     }
 }

@@ -2,14 +2,14 @@ import { lazy, StrictMode, Suspense } from 'react';
 import { createRoot } from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
-import { ErrorBoundary } from '@/components/error-boundary';
-import { RootLayout } from '@/layouts/root-layout';
+import { ErrorBoundary } from './components/error-boundary';
+import { RootLayout } from './layouts/root-layout';
 
 import './index.css';
 
-const HomePage = lazy(() => import('@/pages/home').then((m) => ({ default: m.HomePage })));
-const ProjectsPage = lazy(() => import('@/pages/projects').then((m) => ({ default: m.ProjectsPage })));
-const NotFoundPage = lazy(() => import('@/pages/not-found').then((m) => ({ default: m.NotFoundPage })));
+const HomePage = lazy(() => import('./pages/home').then((m) => ({ default: m.HomePage })));
+const ProjectsPage = lazy(() => import('./pages/projects').then((m) => ({ default: m.ProjectsPage })));
+const NotFoundPage = lazy(() => import('./pages/not-found').then((m) => ({ default: m.NotFoundPage })));
 
 const loadingFallback = (
     <main className="mx-auto flex min-h-[60svh] w-full max-w-5xl items-center justify-center px-4 py-10 sm:px-6 lg:px-8">

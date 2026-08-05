@@ -4,20 +4,28 @@ import { UIStack } from '../lib/ui-stack.js';
 
 const app = new cdk.App();
 
-const rootDomain = app.node.tryGetContext('rootDomain') ?? process.env.ROOT_DOMAIN;
-if (!rootDomain) {
-    throw new Error('Missing domain configuration. Provide -c rootDomain=example.com or ROOT_DOMAIN.');
-}
+const requiredContext = (key: string, options: { allowEmpty?: boolean } = {}) => {
+    const value = app.node.tryGetContext(key);
 
-const siteSubdomain = app.node.tryGetContext('siteSubdomain') ?? process.env.SITE_SUBDOMAIN ?? 'www';
+    if (typeof value !== 'string' || (!options.allowEmpty && value.trim().length === 0)) {
+        throw new Error(`Missing required CDK context value: ${key}`);
+    }
 
+    return value.trim();
+};
+
+const rootDomain = requiredContext('rootDomain');
+const siteSubdomain = requiredContext('siteSubdomain', { allowEmpty: true });
+const hostedZoneId = requiredContext('hostedZoneId');
 const siteDomain = siteSubdomain.length > 0 ? `${siteSubdomain}.${rootDomain}` : rootDomain;
 
-new UIStack(app, 'UIStack', {
+new UIStack(app, 'derek-dev-website-ui', {
     env: {
         account: process.env.CDK_DEFAULT_ACCOUNT,
-        region: process.env.CDK_DEFAULT_REGION,
+        region: process.env.CDK_DEFAULT_REGION ?? 'us-east-1',
     },
+    stackName: 'derek-dev-website-ui',
     rootDomain,
+    hostedZoneId,
     siteDomain,
 });

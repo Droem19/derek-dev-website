@@ -1,8 +1,7 @@
 packages:
-  - apps/*
+  - ui
   - infra
 
 onlyBuiltDependencies:
   - '@swc/core'
   - esbuild
-  - msw
