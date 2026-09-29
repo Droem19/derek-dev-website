@@ -1,46 +1,47 @@
 # Derek Dev Website
 
-This project is a portfolio site to showcase personal projects, professional experience, and any other work over time.
+Personal portfolio site to showcase my professional experience, technical skills, and independent projects
+
+## Live Website
+**[https://www.derek-dev.com](https://www.derek-dev.com)**
+
+<img src="ui/resources/portfolio-preview.png" alt="Portfolio website preview" width="600" />
 
 ## Tech Stack
 
-- TypeScript
-- React
-- Vite
-- Tailwind
-- AWS CDK
-- Biome
+- **Frontend:** React, TypeScript, Vite, Tailwind CSS
+- **Infrastructure:** AWS CDK, S3, CloudFront, Route 53
+- **CI/CD + Tooling:** GitHub Actions, pnpm, Biome
 
 ## Repo Structure
 
-- `ui` - Vite React portfolio app 
-- `ui/src/pages` - Route-level pages for home, projects, and not found states
-- `ui/src/layouts` - Shared app shell with navigation, footer, favicon setup, and route outlet
-- `ui/src/components` - Reusable UI pieces including the error boundary, timeline, skills section, and custom social icons
-- `ui/resources` - Static assets imported by the UI, including favicons, profile image, and resume PDF
-- `infra` - CDK app and stack for static website hosting
-- `.github/workflows/deploy.yml` - Production deploy workflow for pushes to `main` and manual dispatches
+- `ui` - React application built with Vite
+- `ui/src/pages` - Application pages and routing
+- `ui/src/layouts` - Shared application layout
+- `ui/src/components` - Reusable UI components
+- `ui/resources` - Static assets, profile image, and resume
+- `infra` - AWS CDK infrastructure
+- `.github/workflows/deploy.yml` - Automated deployment workflow
 
-## Getting Started (Local Development)
+## Local Development
+
+**Prerequisites**
 
 - Node.js `24.12.0`
 - pnpm `10.28.2`
 - AWS CLI configured for deployments
-- AWS SSO access for the `DRoemhildt19` profile
+- AWS SSO access for the `DRoemhildt19` profile when deploying locally
 
-## Local Development
+From the repository root:
 
-Install dependencies from the repo root:
+- `pnpm install` - Install dependencies
+- `pnpm run local-ui` - Start the local Vite development server
 
-```bash
-pnpm install
-```
+## Validation
 
-Run the local UI dev server:
-
-```bash
-pnpm run local-ui
-```
+- `pnpm run typecheck` - Run TypeScript checks for all workspace packages
+- `pnpm run build` - Build all workspace packages, including the Vite production build
+- `pnpm run format` - Run Biome and write formatting fixes
 
 ## Infrastructure
 
@@ -51,38 +52,26 @@ The stack creates:
 - Private S3 bucket for static site assets
 - CloudFront distribution with Origin Access Control
 - ACM certificate for the primary domain and `www` domain
-- Route53 A and AAAA alias records for both domains
+- Route 53 A and AAAA alias records for both domains
 - SPA fallback responses that serve `index.html` for CloudFront 403 and 404 responses
 - Bucket deployment with CloudFront invalidation
 
-## Deploying the app
+## Deployment
 
-Log in with AWS SSO:
+### Automated (GitHub Actions)
 
-```bash
-pnpm run sso
-```
+The workflow is triggered by pushes to `main` and can also be started manually from GitHub Actions.
 
-Preview the stack:
+- Installs Node.js and pnpm
+- Installs dependencies using `pnpm install --frozen-lockfile`
+- Assumes the AWS IAM role configured in `AWS_DEPLOY_ROLE_ARN`
+- Executes `pnpm run github-action-deploy`
+- Deploys to AWS `us-east-1`
 
-```bash
-pnpm run diff
-```
+### Manual (AWS SSO)
 
-Deploy the stack:
+For local deployments, authenticate with AWS SSO and deploy using:
 
-```bash
-pnpm run deploy
-```
-
-## GitHub Actions Deploy
-
-The deploy workflow runs on pushes to the `main` branch and can also be started manually from GitHub Actions.
-
-The workflow:
-
-- Installs pnpm and Node.js
-- Installs dependencies with `pnpm install --frozen-lockfile`
-- Assumes the AWS role from Github's `AWS_DEPLOY_ROLE_ARN` secret
-- Runs `pnpm run github-action-deploy`
-- Deploys to `us-east-1`
+- `pnpm run sso` - Authenticate with AWS SSO
+- `pnpm run diff` - Preview infrastructure changes
+- `pnpm run deploy` - Deploy the CDK stack
