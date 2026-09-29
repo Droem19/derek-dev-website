@@ -9,7 +9,7 @@
     },
     "engineStrict": true,
     "scripts": {
-        "local-ui": "pnpm --filter ui dev",
+        "local": "pnpm --filter ui dev",
 
         "build": "pnpm --recursive --if-present build",
         "typecheck": "pnpm --recursive --if-present typecheck",

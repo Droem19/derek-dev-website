@@ -35,7 +35,7 @@ Personal portfolio site to showcase my professional experience, technical skills
 From the repository root:
 
 - `pnpm install` - Install dependencies
-- `pnpm run local-ui` - Start the local Vite development server
+- `pnpm run local` - Start the local Vite development server
 
 ## Validation
 
