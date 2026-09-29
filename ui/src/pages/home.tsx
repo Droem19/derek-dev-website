@@ -2,7 +2,7 @@ import { CalendarDays, Check, Code2, Download, Mail, MapPin } from 'lucide-react
 import type { ComponentType, MouseEvent, SVGProps } from 'react';
 import { useEffect, useRef, useState } from 'react';
 
-import resumePdf from '../../resources/derek-roemhildt-resume-2026.pdf';
+import resumePdf from '../../resources/derek-roemhildt-2026-resume.pdf';
 import profilePicture from '../../resources/profile-picture.png';
 import { GitHubIcon, LinkedInIcon } from '../components/custom-icons';
 import { ExperienceTimeline } from '../components/experience-timeline';
@@ -161,10 +161,10 @@ export function HomePage() {
                     </div>
 
                     <p className="max-w-3xl text-base leading-relaxed text-muted-foreground sm:text-lg">
-                        I&apos;m a full-stack software engineer focused on building reliable, practical systems that
-                        simplify complex workflows at scale. I specialize in SaaS platforms, automation, and data
-                        pipelines. I lean toward backend development and infrastructure, but I regularly ship complete
-                        solutions across both frontend and backend for real-world business needs.
+                        I build full-stack applications and cloud-based systems that simplify complex workflows at
+                        scale. I have experience across healthcare platforms, large-scale data processing, distributed
+                        systems, and cloud infrastructure. I enjoy taking projects from concept to production, combining
+                        thoughtful engineering with automation and AI to solve real-world problems.
                     </p>
                 </section>
 

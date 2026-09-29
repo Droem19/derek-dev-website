@@ -28,7 +28,7 @@ type ExperienceItem = {
 
 const experiences: ExperienceItem[] = [
     {
-        title: 'Full-Stack Software Engineer',
+        title: 'Software Engineer',
         company: 'ChiroHD',
         location: 'Remote',
         timeframe: 'Apr 2024 - Present',
@@ -40,12 +40,12 @@ const experiences: ExperienceItem[] = [
             { label: 'Twilio MMS', icon: MessageSquare },
         ],
         highlights: [
-            'Architected automated ERA ingestion pipelines that parse X12 835 remittance files into structured EOB records, eliminating manual data entry for 2500+ chiropractic clinics and improving billing accuracy',
-            'Built a queue-based Twilio MMS processing system using SQS and Lambda to manage burst traffic and track patient opt-in/out status, ensuring compliant and reliable clinic messaging',
-            'Designed and implemented a configurable rules engine to allocate insurance remittances across procedures, supporting default and clinic-specific business logic at scale',
-            'Contributed to the design and implementation of a double-entry accounting system used to track all financial transactions across the platform, including payments, transfers, refunds, and taxes',
-            'Enhanced platform security by implementing app-based MFA using AWS Cognito, improving account protection for patient and billing data',
-            'Partnered directly with clinics to analyze complex billing workflows and translate operational requirements into scalable product improvements',
+            'Architected ERA ingestion pipelines to process X12 835 remittance files into structured EOB records, eliminating manual data entry and improving billing accuracy for 2,500+ chiropractic clinics',
+            'Built a queue-based Twilio messaging system with SQS and Lambda supporting 1M+ messages per month while tracking delivery and patient opt-in/out status',
+            'Developed core components of a double-entry accounting system for tracking payments, transfers, refunds, and taxes across the platform',
+            'Led a platform-wide migration from Node.js 20 to 24 ahead of AWS Lambda runtime deprecation, while replacing Serverless v3 with Open Serverless (osls) to save $2.5K+ in annual licensing costs',
+            'Designed and implemented a configurable rules engine for insurance remittance allocation, enabling clinics to customize billing behavior without requiring engineering changes',
+            'Partnered directly with clinics to identify pain points in insurance billing workflows, shape product requirements, and translate operational needs into scalable product improvement',
         ],
     },
     {
@@ -61,17 +61,17 @@ const experiences: ExperienceItem[] = [
             { label: 'Cost Optimization', icon: DollarSign },
         ],
         highlights: [
-            'Modernized legacy data workflows by migrating acquisition and distribution systems from on-prem infrastructure to AWS, enabling scalable processing of 250M+ documents annually',
-            'Architected and implemented a secure upload portal using Spring Boot and AWS S3 that enabled external partners to submit datasets, triggering automated data processing pipelines for downstream systems',
-            'Redesigned the court docket ingestion pipeline, reducing latency from 3 minutes to 15 seconds (12x faster) and enabling near real-time legal data delivery for customers',
-            'Built a reusable performance monitoring library for distributed microservices (AWS Lambda, ECS) that enabled end-to-end timings of critical workflows, uncovering bottlenecks and duplicate processing that drove optimizations saving $10k+ in cloud costs annually',
-            'Designed a shared Python workspace in AWS S3 for Selenium-based web scraping pipelines used by 50+ developers, centralizing reusable modules and reducing duplicated logic across 1,000+ scraper projects',
+            'Modernized legacy data workflows by migrating acquisition and distribution systems from on-premises infrastructure to AWS, enabling scalable processing of 300M+ documents annually',
+            'Architected a secure upload portal using Spring Boot and S3, replacing manual partner data transfers with a self-service workflow that automatically triggered downstream processing pipelines',
+            'Redesigned the court docket ingestion pipeline, reducing latency from 3 minutes to 15 seconds (12× faster), enabling near real-time legal data delivery for customers',
+            'Built a reusable performance monitoring library for microservices running on AWS Lambda and ECS, uncovering workflow bottlenecks and duplicate processing that drove $10K+ in annual cloud cost savings',
+            'Designed a cloud-based Python workspace used by 50+ developers, centralizing reusable modules and reducing duplicated code across 1,000+ Selenium-based web scraping projects',
         ],
     },
     {
         title: 'Software Engineer Intern',
         company: 'Maverick Software Consulting',
-        location: 'Minneapolis, MN',
+        location: 'Mankato, MN',
         timeframe: 'May 2019 - Dec 2020',
         skills: [
             { label: 'Java', icon: Braces },
