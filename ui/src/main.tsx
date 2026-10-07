@@ -9,6 +9,7 @@ import './index.css';
 
 const HomePage = lazy(() => import('./pages/home').then((m) => ({ default: m.HomePage })));
 const ProjectsPage = lazy(() => import('./pages/projects').then((m) => ({ default: m.ProjectsPage })));
+const ProjectDetailPage = lazy(() => import('./pages/projects').then((m) => ({ default: m.ProjectDetailPage })));
 const NotFoundPage = lazy(() => import('./pages/not-found').then((m) => ({ default: m.NotFoundPage })));
 
 const loadingFallback = (
@@ -34,6 +35,14 @@ const router = createBrowserRouter([
                 element: (
                     <Suspense fallback={loadingFallback}>
                         <ProjectsPage />
+                    </Suspense>
+                ),
+            },
+            {
+                path: '/projects/:projectSlug',
+                element: (
+                    <Suspense fallback={loadingFallback}>
+                        <ProjectDetailPage />
                     </Suspense>
                 ),
             },

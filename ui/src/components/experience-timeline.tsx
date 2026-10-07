@@ -96,10 +96,12 @@ function ExperienceCard({ experience }: { experience: ExperienceItem }) {
         : experience.highlights.slice(0, HIGHLIGHT_PREVIEW_COUNT);
 
     return (
-        <article className="relative" key={`${experience.company}-${experience.timeframe}`}>
-            <div className="absolute top-0 left-[-1.5rem] h-4 w-4 rounded-full border-2 border-background bg-ring sm:left-[-1.75rem]" />
+        <article className="flex items-stretch gap-4 sm:gap-5" key={`${experience.company}-${experience.timeframe}`}>
+            <div aria-hidden="true" className="flex w-4 shrink-0 justify-center sm:w-5">
+                <div className="w-px rounded-full bg-ring/75 shadow-[0_0_18px_rgba(55,150,246,0.35)]" />
+            </div>
 
-            <div className="rounded-2xl border border-border/80 bg-card/70 p-5 shadow-[0_0_0_1px_rgba(255,255,255,0.02)] backdrop-blur-sm sm:p-6">
+            <div className="min-w-0 flex-1 rounded-2xl border border-border/80 bg-card/70 p-5 shadow-[0_0_0_1px_rgba(255,255,255,0.02)] backdrop-blur-sm sm:p-6">
                 <div className="flex flex-col gap-1">
                     <div className="space-y-1">
                         <h3 className="flex flex-wrap items-center gap-x-2 gap-y-1 text-xl font-semibold">
@@ -167,9 +169,7 @@ export function ExperienceTimeline() {
                 </h2>
             </div>
 
-            <div className="relative mt-10 pl-8 sm:pl-10">
-                <div className="absolute top-0 bottom-0 left-4 w-px bg-border/80 sm:left-5" />
-
+            <div className="mt-10">
                 <div className="space-y-8 sm:space-y-10">
                     {experiences.map((experience) => (
                         <ExperienceCard experience={experience} key={`${experience.company}-${experience.timeframe}`} />
